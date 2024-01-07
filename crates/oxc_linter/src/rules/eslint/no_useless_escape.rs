@@ -1,3 +1,5 @@
+use memchr::memmem;
+
 use oxc_ast::AstKind;
 use oxc_diagnostics::{
     miette::{self, Diagnostic},
@@ -7,7 +9,7 @@ use oxc_macros::declare_oxc_lint;
 use oxc_semantic::AstNodeId;
 use oxc_span::Span;
 
-use crate::{context::LintContext, rule::Rule, AstNode};
+use crate::{context::LintContext, rule::Rule, AstNode, Fix};
 
 #[derive(Debug, Error, Diagnostic)]
 #[error("eslint(no-useless-escape): Unnecessary escape character {0:?}")]
@@ -84,7 +86,10 @@ fn check(ctx: &LintContext<'_>, node_id: AstNodeId, start: u32, offsets: &[usize
         let len = c.len_utf8() as u32;
 
         if !is_within_jsx_attribute_item(node_id, ctx) {
-            ctx.diagnostic(NoUselessEscapeDiagnostic(c, Span::new(offset - 1, offset + len)));
+            let span = Span::new(offset - 1, offset + len);
+            ctx.diagnostic_with_fix(NoUselessEscapeDiagnostic(c, span), || {
+                Fix::new(c.to_string(), span)
+            });
         }
     }
 }
@@ -146,26 +151,34 @@ fn check_string(string: &str) -> Vec<usize> {
         return vec![];
     }
 
-    let mut offsets = vec![];
-    let quote_string = string.chars().next();
-    let mut in_escape = false;
-    let mut byte_offset = 0;
+    let quote_char = string.chars().next().unwrap();
+    let bytes = &string[1..string.len() - 1].as_bytes();
+    let escapes = memmem::find_iter(bytes, "\\").collect::<Vec<_>>();
 
-    for c in string.chars() {
-        byte_offset += c.len_utf8();
-        if in_escape {
-            in_escape = false;
-            match c {
-                c if c.is_ascii_digit() || quote_string == Some(c) => { /* noop */ }
-                c if !VALID_STRING_ESCAPES.contains(c) => {
-                    offsets.push(byte_offset - c.len_utf8());
-                }
-                _ => {}
-            }
-        } else if c == '\\' {
-            in_escape = true;
-        }
+    if escapes.is_empty() {
+        return vec![];
     }
+
+    let mut offsets = vec![];
+    let mut prev_offset = None; // for checking double escape `\\`
+    for offset in escapes {
+        // Safety:
+        // The offset comes from a utf8 checked string
+        let s = unsafe { std::str::from_utf8_unchecked(&bytes[offset..]) };
+        if let Some(c) = s.chars().nth(1) {
+            if !(c == quote_char
+                || (offset > 0 && prev_offset == Some(offset - 1))
+                || c.is_ascii_digit()
+                || VALID_STRING_ESCAPES.contains(c))
+            {
+                // +1 for skipping the first string quote `"`
+                // +1 for skipping the escape char `\\`
+                offsets.push(offset + 2);
+            }
+        }
+        prev_offset.replace(offset);
+    }
+
     offsets
 }
 
@@ -377,5 +390,35 @@ fn test() {
         r"var stringLiteralWithNextLine = `line 1\line 2`;",
     ];
 
-    Tester::new_without_config(NoUselessEscape::NAME, pass, fail).test_and_snapshot();
+    let fix = vec![
+        ("var foo = /\\#/;", "var foo = /#/;", None),
+        ("var foo = /\\;/;", "var foo = /;/;", None),
+        ("var foo = \"\\'\";", "var foo = \"'\";", None),
+        ("var foo = \"\\#/\";", "var foo = \"#/\";", None),
+        ("var foo = \"\\a\"", "var foo = \"a\"", None),
+        ("var foo = \"\\B\";", "var foo = \"B\";", None),
+        ("var foo = \"\\@\";", "var foo = \"@\";", None),
+        ("var foo = \"foo \\a bar\";", "var foo = \"foo a bar\";", None),
+        ("var foo = '\\\"';", "var foo = '\"';", None),
+        ("var foo = '\\#';", "var foo = '#';", None),
+        ("var foo = '\\$';", "var foo = '$';", None),
+        ("var foo = '\\p';", "var foo = 'p';", None),
+        ("var foo = '\\p\\a\\@';", "var foo = 'p\\a@';", None),
+        ("<foo attr={\"\\d\"}/>", "<foo attr={\"d\"}/>", None),
+        ("var foo = '\\`';", "var foo = '`';", None),
+        ("var foo = `\\\"`;", "var foo = `\"`;", None),
+        ("var foo = `\\'`;", "var foo = `'`;", None),
+        ("var foo = `\\#`;", "var foo = `#`;", None),
+        ("var foo = '\\`foo\\`';", "var foo = '`foo`';", None),
+        ("var foo = `\\\"${foo}\\\"`;", "var foo = `\"${foo}\"`;", None),
+        ("var foo = `\\'${foo}\\'`;", "var foo = `'${foo}'`;", None),
+        ("var foo = `\\#${foo}`;", "var foo = `#${foo}`;", None),
+        ("let foo = '\\ ';", "let foo = ' ';", None),
+        ("let foo = /\\ /;", "let foo = / /;", None),
+        ("var foo = `\\$\\{{${foo}`;", "var foo = `$\\{{${foo}`;", None),
+    ];
+
+    Tester::new_without_config(NoUselessEscape::NAME, pass, fail)
+        .expect_fix(fix)
+        .test_and_snapshot();
 }

@@ -8,6 +8,7 @@
 /// <https://github.com/import-js/eslint-plugin-import>
 mod import {
     pub mod default;
+    pub mod export;
     pub mod named;
     pub mod no_amd;
     pub mod no_cycle;
@@ -17,9 +18,11 @@ mod import {
 mod deepscan {
     pub mod bad_array_method_on_arguments;
     pub mod bad_bitwise_operator;
+    pub mod bad_char_at_comparison;
     pub mod bad_comparison_sequence;
     pub mod bad_min_max_func;
-    pub mod bad_remove_event_listener;
+    pub mod bad_object_literal_comparison;
+    pub mod bad_replace_all_arg;
     pub mod missing_throw;
     pub mod number_arg_out_of_range;
     pub mod uninvoked_array_callback;
@@ -63,6 +66,7 @@ mod eslint {
     pub mod no_global_assign;
     pub mod no_import_assign;
     pub mod no_inner_declarations;
+    pub mod no_irregular_whitespace;
     pub mod no_loss_of_precision;
     pub mod no_mixed_operators;
     pub mod no_new_symbol;
@@ -81,8 +85,10 @@ mod eslint {
     pub mod no_unsafe_negation;
     pub mod no_unsafe_optional_chaining;
     pub mod no_unused_labels;
+    pub mod no_unused_private_class_members;
     pub mod no_useless_catch;
     pub mod no_useless_escape;
+    pub mod no_var;
     pub mod require_yield;
     pub mod use_isnan;
     pub mod valid_typeof;
@@ -133,9 +139,11 @@ mod jest {
 }
 
 mod react {
+    pub mod button_has_type;
     pub mod jsx_key;
     pub mod jsx_no_comment_text_nodes;
     pub mod jsx_no_duplicate_props;
+    pub mod jsx_no_undef;
     pub mod jsx_no_useless_fragment;
     pub mod no_children_prop;
     pub mod no_dangerously_set_inner_html;
@@ -144,6 +152,7 @@ mod react {
     pub mod no_render_return_value;
     pub mod no_string_refs;
     pub mod no_unescaped_entities;
+    pub mod no_unknown_property;
     pub mod react_in_jsx_scope;
 }
 
@@ -170,6 +179,7 @@ mod unicorn {
     pub mod no_nested_ternary;
     pub mod no_new_array;
     pub mod no_new_buffer;
+    pub mod no_null;
     pub mod no_object_as_default_parameter;
     pub mod no_static_only_class;
     pub mod no_thenable;
@@ -196,15 +206,18 @@ mod unicorn {
     pub mod prefer_dom_node_append;
     pub mod prefer_dom_node_dataset;
     pub mod prefer_dom_node_remove;
+    pub mod prefer_dom_node_text_content;
     pub mod prefer_event_target;
     pub mod prefer_includes;
     pub mod prefer_logical_operator_over_ternary;
     pub mod prefer_math_trunc;
     pub mod prefer_modern_dom_apis;
+    pub mod prefer_modern_math_apis;
     pub mod prefer_native_coercion_functions;
     pub mod prefer_node_protocol;
     pub mod prefer_number_properties;
     pub mod prefer_optional_catch_binding;
+    pub mod prefer_prototype_methods;
     pub mod prefer_query_selector;
     pub mod prefer_reflect_apply;
     pub mod prefer_regexp_test;
@@ -226,24 +239,43 @@ mod jsx_a11y {
     pub mod alt_text;
     pub mod anchor_has_content;
     pub mod anchor_is_valid;
+    pub mod aria_props;
+    pub mod aria_role;
+    pub mod aria_unsupported_elements;
     pub mod heading_has_content;
     pub mod html_has_lang;
     pub mod iframe_has_title;
     pub mod img_redundant_alt;
+    pub mod lang;
+    pub mod media_has_caption;
+    pub mod mouse_events_have_key_events;
+    pub mod no_access_key;
+    pub mod no_aria_hidden_on_focusable;
     pub mod no_autofocus;
+    pub mod no_distracting_elements;
+    pub mod prefer_tag_over_role;
     pub mod scope;
+    pub mod tab_index_no_positive;
 }
 
 mod oxc {
+    pub mod approx_constant;
+    pub mod const_comparisons;
+    pub mod double_comparisons;
+    pub mod erasing_op;
+    pub mod misrefactored_assign_op;
     pub mod no_accumulating_spread;
+    pub mod only_used_in_recursion;
 }
 
 oxc_macros::declare_all_lint_rules! {
     deepscan::bad_array_method_on_arguments,
     deepscan::bad_bitwise_operator,
+    deepscan::bad_char_at_comparison,
     deepscan::bad_comparison_sequence,
+    deepscan::bad_object_literal_comparison,
     deepscan::bad_min_max_func,
-    deepscan::bad_remove_event_listener,
+    deepscan::bad_replace_all_arg,
     deepscan::missing_throw,
     deepscan::number_arg_out_of_range,
     deepscan::uninvoked_array_callback,
@@ -284,6 +316,7 @@ oxc_macros::declare_all_lint_rules! {
     eslint::no_global_assign,
     eslint::no_import_assign,
     eslint::no_inner_declarations,
+    eslint::no_irregular_whitespace,
     eslint::no_loss_of_precision,
     eslint::no_mixed_operators,
     eslint::no_new_symbol,
@@ -302,8 +335,10 @@ oxc_macros::declare_all_lint_rules! {
     eslint::no_unsafe_negation,
     eslint::no_unsafe_optional_chaining,
     eslint::no_unused_labels,
+    eslint::no_unused_private_class_members,
     eslint::no_useless_catch,
     eslint::no_useless_escape,
+    eslint::no_var,
     eslint::require_yield,
     eslint::use_isnan,
     eslint::valid_typeof,
@@ -368,6 +403,7 @@ oxc_macros::declare_all_lint_rules! {
     unicorn::no_nested_ternary,
     unicorn::no_new_array,
     unicorn::no_new_buffer,
+    unicorn::no_null,
     unicorn::no_object_as_default_parameter,
     unicorn::no_static_only_class,
     unicorn::no_thenable,
@@ -393,15 +429,18 @@ oxc_macros::declare_all_lint_rules! {
     unicorn::prefer_dom_node_append,
     unicorn::prefer_dom_node_dataset,
     unicorn::prefer_dom_node_remove,
+    unicorn::prefer_dom_node_text_content,
     unicorn::prefer_event_target,
     unicorn::prefer_includes,
     unicorn::prefer_logical_operator_over_ternary,
     unicorn::prefer_math_trunc,
     unicorn::prefer_modern_dom_apis,
+    unicorn::prefer_modern_math_apis,
     unicorn::prefer_native_coercion_functions,
     unicorn::no_useless_spread,
     unicorn::prefer_number_properties,
     unicorn::prefer_optional_catch_binding,
+    unicorn::prefer_prototype_methods,
     unicorn::prefer_query_selector,
     unicorn::prefer_reflect_apply,
     unicorn::prefer_regexp_test,
@@ -417,10 +456,12 @@ oxc_macros::declare_all_lint_rules! {
     unicorn::switch_case_braces,
     unicorn::text_encoding_identifier_case,
     unicorn::throw_new_error,
+    react::button_has_type,
     react::jsx_key,
     react::jsx_no_comment_text_nodes,
     react::jsx_no_duplicate_props,
     react::jsx_no_useless_fragment,
+    react::jsx_no_undef,
     react::react_in_jsx_scope,
     react::no_children_prop,
     react::no_dangerously_set_inner_html,
@@ -429,19 +470,38 @@ oxc_macros::declare_all_lint_rules! {
     react::no_string_refs,
     react::no_unescaped_entities,
     react::no_is_mounted,
+    react::no_unknown_property,
     import::default,
     import::named,
     import::no_cycle,
     import::no_self_import,
     import::no_amd,
+    import::export,
     jsx_a11y::alt_text,
     jsx_a11y::anchor_has_content,
     jsx_a11y::anchor_is_valid,
+    jsx_a11y::aria_props,
+    jsx_a11y::aria_unsupported_elements,
     jsx_a11y::heading_has_content,
     jsx_a11y::html_has_lang,
+    jsx_a11y::lang,
     jsx_a11y::iframe_has_title,
     jsx_a11y::img_redundant_alt,
-    jsx_a11y::scope,
+    jsx_a11y::media_has_caption,
+    jsx_a11y::mouse_events_have_key_events,
+    jsx_a11y::no_access_key,
+    jsx_a11y::no_aria_hidden_on_focusable,
     jsx_a11y::no_autofocus,
-    oxc::no_accumulating_spread
+    jsx_a11y::prefer_tag_over_role,
+    jsx_a11y::scope,
+    jsx_a11y::tab_index_no_positive,
+    jsx_a11y::aria_role,
+    jsx_a11y::no_distracting_elements,
+    oxc::approx_constant,
+    oxc::const_comparisons,
+    oxc::double_comparisons,
+    oxc::erasing_op,
+    oxc::misrefactored_assign_op,
+    oxc::no_accumulating_spread,
+    oxc::only_used_in_recursion,
 }

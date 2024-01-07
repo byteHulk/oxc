@@ -44,8 +44,16 @@ impl ScopeFlags {
         self.contains(Self::Function)
     }
 
+    pub fn is_constructor(&self) -> bool {
+        self.contains(Self::Constructor)
+    }
+
     pub fn is_class_static_block(&self) -> bool {
         self.contains(Self::ClassStaticBlock)
+    }
+
+    pub fn is_ts_module_block(&self) -> bool {
+        self.contains(Self::TsModuleBlock)
     }
 
     pub fn is_var(&self) -> bool {
@@ -54,5 +62,9 @@ impl ScopeFlags {
 
     pub fn is_set_accessor(&self) -> bool {
         self.contains(Self::SetAccessor)
+    }
+
+    pub fn is_set_or_get_accessor(&self) -> bool {
+        self.intersects(Self::SetAccessor | Self::GetAccessor)
     }
 }

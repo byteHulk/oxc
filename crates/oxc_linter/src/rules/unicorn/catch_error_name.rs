@@ -14,15 +14,27 @@ use crate::{context::LintContext, rule::Rule, AstNode};
 
 #[derive(Debug, Error, Diagnostic)]
 #[error("eslint-plugin-unicorn(catch-error-name): The catch parameter {0:?} should be named {1:?}")]
+#[diagnostic(severity(warning))]
 struct CatchErrorNameDiagnostic(Atom, Atom, #[label] pub Span);
 
+#[derive(Debug, Default, Clone)]
+pub struct CatchErrorName(Box<CatchErrorNameConfig>);
+
 #[derive(Debug, Clone)]
-pub struct CatchErrorName {
+pub struct CatchErrorNameConfig {
     ignore: Vec<Atom>,
     name: Atom,
 }
 
-impl Default for CatchErrorName {
+impl std::ops::Deref for CatchErrorName {
+    type Target = CatchErrorNameConfig;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl Default for CatchErrorNameConfig {
     fn default() -> Self {
         Self { ignore: vec![], name: Atom::new_inline("error") }
     }
@@ -68,7 +80,7 @@ impl Rule for CatchErrorName {
                 .unwrap_or("error"),
         );
 
-        Self { ignore: ignored_names, name: allowed_name }
+        Self(Box::new(CatchErrorNameConfig { ignore: ignored_names, name: allowed_name }))
     }
 
     fn run<'a>(&self, node: &AstNode<'a>, ctx: &LintContext<'a>) {
@@ -104,7 +116,7 @@ impl Rule for CatchErrorName {
         if let AstKind::CallExpression(call_expr) = node.kind() {
             if let Expression::MemberExpression(member_expr) = &call_expr.callee {
                 if member_expr.static_property_name() == Some("catch") {
-                    if let Some(arg0) = call_expr.arguments.get(0) {
+                    if let Some(arg0) = call_expr.arguments.first() {
                         if let Some(diagnostic) = self.check_function_arguments(arg0, ctx) {
                             ctx.diagnostic(diagnostic);
                         }
@@ -137,7 +149,7 @@ impl CatchErrorName {
         let expr = expr.without_parenthesized();
 
         if let Expression::ArrowExpression(arrow_expr) = expr {
-            if let Some(arg0) = arrow_expr.params.items.get(0) {
+            if let Some(arg0) = arrow_expr.params.items.first() {
                 if let BindingPatternKind::BindingIdentifier(v) = &arg0.pattern.kind {
                     if self.is_name_allowed(&v.name) {
                         return None;
@@ -165,7 +177,7 @@ impl CatchErrorName {
         }
 
         if let Expression::FunctionExpression(fn_expr) = expr {
-            if let Some(arg0) = fn_expr.params.items.get(0) {
+            if let Some(arg0) = fn_expr.params.items.first() {
                 if let BindingPatternKind::BindingIdentifier(binding_ident) = &arg0.pattern.kind {
                     if self.is_name_allowed(&binding_ident.name) {
                         return None;

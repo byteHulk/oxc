@@ -1,7 +1,7 @@
 #[allow(clippy::wildcard_imports)]
 use oxc_ast::{
     ast::*,
-    syntax_directed_operations::{BoundNames, IsSimpleParameterList, PropName},
+    syntax_directed_operations::{IsSimpleParameterList, PropName},
     AstKind,
 };
 use oxc_diagnostics::{
@@ -15,7 +15,6 @@ use oxc_syntax::{
     NumberBase,
 };
 use phf::{phf_set, Set};
-use rustc_hash::FxHashMap;
 
 use crate::{builder::SemanticBuilder, diagnostics::Redeclaration, scope::ScopeFlags, AstNode};
 
@@ -24,7 +23,6 @@ pub struct EarlyErrorJavaScript;
 impl EarlyErrorJavaScript {
     pub fn run<'a>(node: &AstNode<'a>, ctx: &SemanticBuilder<'a>) {
         let kind = node.kind();
-        check_function_declaration(kind, node, ctx);
 
         match kind {
             AstKind::BindingIdentifier(ident) => {
@@ -36,8 +34,7 @@ impl EarlyErrorJavaScript {
                 check_identifier_reference(ident, node, ctx);
             }
             AstKind::LabelIdentifier(ident) => check_identifier(&ident.name, ident.span, node, ctx),
-            AstKind::PrivateIdentifier(ident) => check_private_identifier(ident, node, ctx),
-
+            AstKind::PrivateIdentifier(ident) => check_private_identifier_outside_class(ident, ctx),
             AstKind::NumberLiteral(lit) => check_number_literal(lit, ctx),
             AstKind::StringLiteral(lit) => check_string_literal(lit, ctx),
             AstKind::RegExpLiteral(lit) => check_regexp_literal(lit, ctx),
@@ -45,19 +42,39 @@ impl EarlyErrorJavaScript {
             AstKind::Directive(dir) => check_directive(dir, node, ctx),
             AstKind::ModuleDeclaration(decl) => {
                 check_module_declaration(decl, node, ctx);
-                if let ModuleDeclaration::ImportDeclaration(import_decl) = decl {
-                    check_import_declaration(import_decl, ctx);
-                }
             }
             AstKind::MetaProperty(prop) => check_meta_property(prop, node, ctx),
 
-            AstKind::WithStatement(stmt) => check_with_statement(stmt, ctx),
+            AstKind::WithStatement(stmt) => {
+                check_function_declaration(&stmt.body, false, ctx);
+                check_with_statement(stmt, ctx);
+            }
             AstKind::SwitchStatement(stmt) => check_switch_statement(stmt, ctx),
             AstKind::BreakStatement(stmt) => check_break_statement(stmt, node, ctx),
             AstKind::ContinueStatement(stmt) => check_continue_statement(stmt, node, ctx),
-            AstKind::LabeledStatement(stmt) => check_labeled_statement(stmt, node, ctx),
-            AstKind::ForInStatement(stmt) => check_for_statement_left(&stmt.left, true, node, ctx),
-            AstKind::ForOfStatement(stmt) => check_for_statement_left(&stmt.left, false, node, ctx),
+            AstKind::LabeledStatement(stmt) => {
+                check_function_declaration(&stmt.body, true, ctx);
+                check_labeled_statement(stmt, node, ctx);
+            }
+            AstKind::ForInStatement(stmt) => {
+                check_function_declaration(&stmt.body, false, ctx);
+                check_for_statement_left(&stmt.left, true, node, ctx);
+            }
+            AstKind::ForOfStatement(stmt) => {
+                check_function_declaration(&stmt.body, false, ctx);
+                check_for_statement_left(&stmt.left, false, node, ctx);
+            }
+            AstKind::WhileStatement(WhileStatement { body, .. })
+            | AstKind::DoWhileStatement(DoWhileStatement { body, .. })
+            | AstKind::ForStatement(ForStatement { body, .. }) => {
+                check_function_declaration(body, false, ctx);
+            }
+            AstKind::IfStatement(stmt) => {
+                check_function_declaration(&stmt.consequent, true, ctx);
+                if let Some(alternate) = &stmt.alternate {
+                    check_function_declaration(alternate, true, ctx);
+                }
+            }
 
             AstKind::Class(class) => check_class(class, ctx),
             AstKind::Super(sup) => check_super(sup, node, ctx),
@@ -139,15 +156,6 @@ fn check_module_record(ctx: &SemanticBuilder<'_>) {
     }
 }
 
-fn check_duplicate_bound_names<T: BoundNames>(bound_names: &T, ctx: &SemanticBuilder<'_>) {
-    let mut idents: FxHashMap<Atom, Span> = FxHashMap::default();
-    bound_names.bound_names(&mut |ident| {
-        if let Some(old_span) = idents.insert(ident.name.clone(), ident.span) {
-            ctx.error(Redeclaration(ident.name.clone(), old_span, ident.span));
-        }
-    });
-}
-
 #[derive(Debug, Error, Diagnostic)]
 #[error("Cannot use await in class static initialization block")]
 #[diagnostic()]
@@ -171,6 +179,10 @@ pub const STRICT_MODE_NAMES: Set<&'static str> = phf_set! {
 };
 
 fn check_identifier<'a>(name: &Atom, span: Span, node: &AstNode<'a>, ctx: &SemanticBuilder<'a>) {
+    // ts module block allows revered keywords
+    if ctx.current_scope_flags().is_ts_module_block() {
+        return;
+    }
     if *name == "await" {
         // It is a Syntax Error if the goal symbol of the syntactic grammar is Module and the StringValue of IdentifierName is "await".
         if ctx.source_type.is_module() {
@@ -273,61 +285,33 @@ fn check_identifier_reference<'a>(
     }
 }
 
-fn check_private_identifier<'a>(
-    ident: &PrivateIdentifier,
-    node: &AstNode<'a>,
-    ctx: &SemanticBuilder<'a>,
-) {
-    // Ignore private identifier declaration inside class
-    if matches!(ctx.nodes.parent_kind(node.id()), Some(AstKind::PropertyKey(_))) {
-        return;
-    }
-
-    // Find enclosing classes
-    let mut classes = vec![];
-    for node_id in ctx.nodes.ancestors(node.id()).skip(1) {
-        let kind = ctx.nodes.kind(node_id);
-        if let AstKind::Class(class) = kind {
-            classes.push(class);
-        }
-        // stop lookup when the class is a heritage, e.g.
-        // `class C extends class extends class { x = this.#foo; } {} { #foo }`
-        // `class C extends function() { x = this.#foo; } { #foo }`
-        if matches!(kind, AstKind::ClassHeritage(_)) {
-            break;
-        }
-    }
-
-    if classes.is_empty() {
+fn check_private_identifier_outside_class(ident: &PrivateIdentifier, ctx: &SemanticBuilder<'_>) {
+    if ctx.class_table_builder.current_class_id.is_none() {
         #[derive(Debug, Error, Diagnostic)]
         #[error("Private identifier '#{0}' is not allowed outside class bodies")]
         #[diagnostic()]
         struct PrivateNotInClass(Atom, #[label] Span);
-        return ctx.error(PrivateNotInClass(ident.name.clone(), ident.span));
-    };
+        ctx.error(PrivateNotInClass(ident.name.clone(), ident.span));
+    }
+}
 
-    // Check private identifier declarations in class.
-    // This implementations does a simple lookup for private identifier declarations inside a class.
-    // Performance can be improved by storing private identifiers for each class inside a lookup table,
-    // but there are not many private identifiers in the wild so we should be good fow now.
-    let found_private_ident = classes.iter().any(|class| {
-        class.body.body.iter().any(|def| {
-            // let key = match def {
-            // ClassElement::PropertyDefinition(def) => &def.key,
-            // ClassElement::MethodDefinition(def) => &def.key,
-            // _ => return false,
-            // };
-            matches!(def.property_key(), Some(PropertyKey::PrivateIdentifier(prop_ident))
-                if prop_ident.name == ident.name)
-        })
-    });
-
-    if !found_private_ident {
-        #[derive(Debug, Error, Diagnostic)]
-        #[error("Private field '{0}' must be declared in an enclosing class")]
-        #[diagnostic()]
-        struct PrivateFieldUndeclared(Atom, #[label] Span);
-        ctx.error(PrivateFieldUndeclared(ident.name.clone(), ident.span));
+fn check_private_identifier(ctx: &SemanticBuilder<'_>) {
+    if let Some(class_id) = ctx.class_table_builder.current_class_id {
+        ctx.class_table_builder.classes.iter_private_identifiers(class_id).for_each(|reference| {
+            if reference.element_ids.is_empty()
+                && !ctx.class_table_builder.classes.ancestors(class_id).skip(1).any(|class_id| {
+                    ctx.class_table_builder
+                        .classes
+                        .has_private_definition(class_id, &reference.name)
+                })
+            {
+                #[derive(Debug, Error, Diagnostic)]
+                #[error("Private field '{0}' must be declared in an enclosing class")]
+                #[diagnostic()]
+                struct PrivateFieldUndeclared(Atom, #[label] Span);
+                ctx.error(PrivateFieldUndeclared(reference.name.clone(), reference.span));
+            }
+        });
     }
 }
 
@@ -461,7 +445,8 @@ fn check_module_declaration<'a>(
         | ModuleDeclaration::TSExportAssignment(_)
         | ModuleDeclaration::TSNamespaceExportDeclaration(_) => "export statement",
     };
-    let span = Span::new(decl.span().start, decl.span().start + 6);
+    let start = decl.span().start;
+    let span = Span::new(start, start + 6);
     match ctx.source_type.module_kind() {
         ModuleKind::Script => {
             ctx.error(ModuleCode(text, span));
@@ -473,13 +458,6 @@ fn check_module_declaration<'a>(
             ctx.error(TopLevel(text, span));
         }
     }
-}
-
-fn check_import_declaration(decl: &ImportDeclaration, ctx: &SemanticBuilder<'_>) {
-    // ModuleItem : ImportDeclaration
-    // It is a Syntax Error if the BoundNames of ImportDeclaration contains any duplicate entries.
-    // bound_names are usually small, a simple loop should be more performant checking with a hashmap
-    check_duplicate_bound_names(decl, ctx);
 }
 
 fn check_meta_property<'a>(prop: &MetaProperty, node: &AstNode<'a>, ctx: &SemanticBuilder<'a>) {
@@ -541,8 +519,8 @@ fn check_meta_property<'a>(prop: &MetaProperty, node: &AstNode<'a>, ctx: &Semant
 }
 
 fn check_function_declaration<'a>(
-    kind: AstKind<'a>,
-    _node: &AstNode<'a>,
+    stmt: &Statement<'a>,
+    is_if_stmt_or_labeled_stmt: bool,
     ctx: &SemanticBuilder<'a>,
 ) {
     #[derive(Debug, Error, Diagnostic)]
@@ -560,34 +538,13 @@ fn check_function_declaration<'a>(
     struct FunctionDeclarationNonStrict(#[label] Span);
 
     // Function declaration not allowed in statement position
-    let check = |stmt: &Statement<'a>| {
-        if let Statement::Declaration(Declaration::FunctionDeclaration(decl)) = stmt {
-            if ctx.strict_mode() {
-                ctx.error(FunctionDeclarationStrict(decl.span));
-            } else if !matches!(kind, AstKind::IfStatement(_) | AstKind::LabeledStatement(_)) {
-                ctx.error(FunctionDeclarationNonStrict(decl.span));
-            }
+    if let Statement::Declaration(Declaration::FunctionDeclaration(decl)) = stmt {
+        if ctx.strict_mode() {
+            ctx.error(FunctionDeclarationStrict(decl.span));
+        } else if !is_if_stmt_or_labeled_stmt {
+            ctx.error(FunctionDeclarationNonStrict(decl.span));
         }
     };
-
-    match kind {
-        AstKind::WithStatement(WithStatement { body, .. })
-        | AstKind::WhileStatement(WhileStatement { body, .. })
-        | AstKind::DoWhileStatement(DoWhileStatement { body, .. })
-        | AstKind::ForStatement(ForStatement { body, .. })
-        | AstKind::ForInStatement(ForInStatement { body, .. })
-        | AstKind::ForOfStatement(ForOfStatement { body, .. })
-        | AstKind::LabeledStatement(LabeledStatement { body, .. }) => {
-            check(body);
-        }
-        AstKind::IfStatement(if_stmt) => {
-            check(&if_stmt.consequent);
-            if let Some(alternate) = &if_stmt.alternate {
-                check(alternate);
-            }
-        }
-        _ => {}
-    }
 }
 
 fn check_regexp_literal(lit: &RegExpLiteral, ctx: &SemanticBuilder<'_>) {
@@ -817,6 +774,8 @@ fn check_class(class: &Class, ctx: &SemanticBuilder<'_>) {
         #[label("it cannot be redeclared here")] Span,
     );
 
+    check_private_identifier(ctx);
+
     // ClassBody : ClassElementList
     // It is a Syntax Error if PrototypePropertyNameList of ClassElementList contains more than one occurrence of "constructor".
     let mut prev_constructor: Option<Span> = None;
@@ -862,73 +821,78 @@ fn check_super<'a>(sup: &Super, node: &AstNode<'a>, ctx: &SemanticBuilder<'a>) {
         _ => None,
     };
 
+    let Some(class_id) = ctx.class_table_builder.current_class_id else {
+        for scope_id in ctx.scope.ancestors(ctx.current_scope_id) {
+            let flags = ctx.scope.get_flags(scope_id);
+            if flags.is_function()
+                && matches!(
+                    ctx.nodes.parent_kind(ctx.scope.get_node_id(scope_id)),
+                    Some(AstKind::ObjectProperty(_))
+                )
+            {
+                if let Some(super_call_span) = super_call_span {
+                    ctx.error(UnexpectedSuperCall(super_call_span));
+                }
+                return;
+            };
+        }
+
+        // ModuleBody : ModuleItemList
+        // * It is a Syntax Error if ModuleItemList Contains super.
+        // ScriptBody : StatementList
+        // * It is a Syntax Error if StatementList Contains super
+        return super_call_span.map_or_else(
+            || ctx.error(UnexpectedSuperReference(sup.span)),
+            |super_call_span| ctx.error(UnexpectedSuperCall(super_call_span)),
+        );
+    };
+
     // skip(1) is the self `Super`
     // skip(2) is the parent `CallExpression` or `NewExpression`
     for node_id in ctx.nodes.ancestors(node.id()).skip(2) {
         match ctx.nodes.kind(node_id) {
-            AstKind::Class(class) => {
-                // ClassTail : ClassHeritageopt { ClassBody }
-                // It is a Syntax Error if ClassHeritage is not present and the following algorithm returns true:
-                // 1. Let constructor be ConstructorMethod of ClassBody.
-                // 2. If constructor is empty, return false.
-                // 3. Return HasDirectSuper of constructor.
-                if class.super_class.is_none() {
-                    return ctx.error(SuperWithoutDerivedClass(sup.span, class.span));
-                }
-                break;
-            }
             AstKind::MethodDefinition(def) => {
                 // ClassElement : MethodDefinition
                 // It is a Syntax Error if PropName of MethodDefinition is not "constructor" and HasDirectSuper of MethodDefinition is true.
                 if let Some(super_call_span) = super_call_span {
                     if def.kind == MethodDefinitionKind::Constructor {
-                        // pass through and let AstKind::Class check ClassHeritage
-                    } else {
-                        return ctx.error(UnexpectedSuperCall(super_call_span));
+                        // It is a Syntax Error if SuperCall in nested set/get function
+                        if ctx.scope.get_flags(node.scope_id()).is_set_or_get_accessor() {
+                            return ctx.error(UnexpectedSuperCall(super_call_span));
+                        }
+
+                        // check ClassHeritage
+                        if let AstKind::Class(class) =
+                            ctx.nodes.kind(ctx.class_table_builder.classes.get_node_id(class_id))
+                        {
+                            // ClassTail : ClassHeritageopt { ClassBody }
+                            // It is a Syntax Error if ClassHeritage is not present and the following algorithm returns true:
+                            // 1. Let constructor be ConstructorMethod of ClassBody.
+                            // 2. If constructor is empty, return false.
+                            // 3. Return HasDirectSuper of constructor.
+                            if class.super_class.is_none() {
+                                return ctx.error(SuperWithoutDerivedClass(sup.span, class.span));
+                            }
+                        }
+                        break;
                     }
-                } else {
-                    // super references are allowed in method
-                    break;
+                    return ctx.error(UnexpectedSuperCall(super_call_span));
                 }
+                // super references are allowed in method
+                break;
             }
             // FieldDefinition : ClassElementName Initializer opt
             // * It is a Syntax Error if Initializer is present and Initializer Contains SuperCall is true.
             // PropertyDefinition : MethodDefinition
             // * It is a Syntax Error if HasDirectSuper of MethodDefinition is true.
-            AstKind::PropertyDefinition(_) => {
+            AstKind::PropertyDefinition(_)
+            // ClassStaticBlockBody : ClassStaticBlockStatementList
+            // * It is a Syntax Error if ClassStaticBlockStatementList Contains SuperCall is true.
+            | AstKind::StaticBlock(_) => {
                 if let Some(super_call_span) = super_call_span {
                     return ctx.error(UnexpectedSuperCall(super_call_span));
                 }
                 break;
-            }
-            AstKind::ObjectProperty(prop) => {
-                if prop.value.is_function() {
-                    match super_call_span {
-                        Some(super_call_span) if super_call_span.start > prop.key.span().end => {
-                            return ctx.error(UnexpectedSuperCall(super_call_span));
-                        }
-                        _ => {
-                            break;
-                        }
-                    }
-                }
-            }
-            // ClassStaticBlockBody : ClassStaticBlockStatementList
-            // * It is a Syntax Error if ClassStaticBlockStatementList Contains SuperCall is true.
-            AstKind::StaticBlock(_) => {
-                if let Some(super_call_span) = super_call_span {
-                    return ctx.error(UnexpectedSuperCall(super_call_span));
-                }
-            }
-            // ModuleBody : ModuleItemList
-            // * It is a Syntax Error if ModuleItemList Contains super.
-            // ScriptBody : StatementList
-            // * It is a Syntax Error if StatementList Contains super
-            AstKind::Program(_) => {
-                return super_call_span.map_or_else(
-                    || ctx.error(UnexpectedSuperReference(sup.span)),
-                    |super_call_span| ctx.error(UnexpectedSuperCall(super_call_span)),
-                );
             }
             _ => {}
         }
@@ -965,20 +929,6 @@ fn check_formal_parameters<'a>(
             ctx.error(ARestParameterCannotHaveAnInitializer(pat.span));
         }
     }
-
-    if params.is_empty() {
-        return;
-    }
-
-    // Note: all other cases forbid duplicate parameter names.
-    if params.kind == FormalParameterKind::FormalParameter
-        && !ctx.strict_mode()
-        && params.is_simple_parameter_list()
-    {
-        return;
-    }
-
-    check_duplicate_bound_names(params, ctx);
 }
 
 fn check_array_pattern(pattern: &ArrayPattern, ctx: &SemanticBuilder<'_>) {
@@ -1119,7 +1069,7 @@ fn check_unary_expression<'a>(
 fn is_in_formal_parameters<'a>(node: &AstNode<'a>, ctx: &SemanticBuilder<'a>) -> bool {
     for node_id in ctx.nodes.ancestors(node.id()).skip(1) {
         match ctx.nodes.kind(node_id) {
-            AstKind::FormalParameters(_) => return true,
+            AstKind::FormalParameter(_) => return true,
             AstKind::Program(_) | AstKind::Function(_) | AstKind::ArrowExpression(_) => break,
             _ => {}
         }

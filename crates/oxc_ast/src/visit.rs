@@ -468,9 +468,12 @@ pub trait Visit<'a>: Sized {
     }
 
     fn visit_class_body(&mut self, body: &ClassBody<'a>) {
+        let kind = AstKind::ClassBody(self.alloc(body));
+        self.enter_node(kind);
         for elem in &body.body {
             self.visit_class_element(elem);
         }
+        self.leave_node(kind);
     }
 
     fn visit_class_element(&mut self, elem: &ClassElement<'a>) {
@@ -836,8 +839,11 @@ pub trait Visit<'a>: Sized {
     }
 
     fn visit_private_in_expression(&mut self, expr: &PrivateInExpression<'a>) {
+        let kind = AstKind::PrivateInExpression(self.alloc(expr));
+        self.enter_node(kind);
         self.visit_private_identifier(&expr.left);
         self.visit_expression(&expr.right);
+        self.leave_node(kind);
     }
 
     fn visit_sequence_expression(&mut self, expr: &SequenceExpression<'a>) {
@@ -1018,6 +1024,9 @@ pub trait Visit<'a>: Sized {
         for child in &elem.children {
             self.visit_jsx_child(child);
         }
+        if let Some(closing_elem) = &elem.closing_element {
+            self.visit_jsx_closing_element(closing_elem);
+        }
         self.leave_node(kind);
     }
 
@@ -1031,9 +1040,50 @@ pub trait Visit<'a>: Sized {
         self.leave_node(kind);
     }
 
+    fn visit_jsx_closing_element(&mut self, elem: &JSXClosingElement<'a>) {
+        let kind = AstKind::JSXClosingElement(self.alloc(elem));
+        self.enter_node(kind);
+        self.visit_jsx_element_name(&elem.name);
+        self.leave_node(kind);
+    }
+
     fn visit_jsx_element_name(&mut self, name: &JSXElementName<'a>) {
         let kind = AstKind::JSXElementName(self.alloc(name));
         self.enter_node(kind);
+        self.leave_node(kind);
+    }
+
+    fn visit_jsx_identifier(&mut self, ident: &JSXIdentifier) {
+        let kind = AstKind::JSXIdentifier(self.alloc(ident));
+        self.enter_node(kind);
+        self.leave_node(kind);
+    }
+
+    fn visit_jsx_member_expression(&mut self, expr: &JSXMemberExpression<'a>) {
+        let kind = AstKind::JSXMemberExpression(self.alloc(expr));
+        self.enter_node(kind);
+        self.visit_jsx_member_expression_object(&expr.object);
+        self.visit_jsx_identifier(&expr.property);
+        self.leave_node(kind);
+    }
+
+    fn visit_jsx_member_expression_object(&mut self, expr: &JSXMemberExpressionObject<'a>) {
+        let kind = AstKind::JSXMemberExpressionObject(self.alloc(expr));
+        self.enter_node(kind);
+        match expr {
+            JSXMemberExpressionObject::Identifier(ident) => self.visit_jsx_identifier(ident),
+            JSXMemberExpressionObject::MemberExpression(expr) => {
+                self.visit_jsx_member_expression(expr);
+            }
+        }
+        self.leave_node(kind);
+    }
+
+    fn visit_jsx_namespaced_name(&mut self, name: &JSXNamespacedName) {
+        let kind = AstKind::JSXNamespacedName(self.alloc(name));
+        self.enter_node(kind);
+        self.visit_jsx_identifier(&name.namespace);
+        self.visit_jsx_identifier(&name.property);
         self.leave_node(kind);
     }
 

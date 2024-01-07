@@ -13,6 +13,7 @@ use rustc_hash::FxHashMap;
 use crate::{
     binder::Binder,
     checker::{EarlyErrorJavaScript, EarlyErrorTypeScript},
+    class::ClassTableBuilder,
     diagnostics::Redeclaration,
     jsdoc::JSDocBuilder,
     module_record::ModuleRecordBuilder,
@@ -84,6 +85,7 @@ pub struct SemanticBuilder<'a> {
     check_syntax_error: bool,
 
     redeclare_variables: RedeclareVariables,
+    pub class_table_builder: ClassTableBuilder,
 }
 
 pub struct SemanticBuilderReturn<'a> {
@@ -116,6 +118,7 @@ impl<'a> SemanticBuilder<'a> {
             jsdoc: JSDocBuilder::new(source_text, &trivias),
             check_syntax_error: false,
             redeclare_variables: RedeclareVariables { variables: vec![] },
+            class_table_builder: ClassTableBuilder::new(),
         }
     }
 
@@ -169,6 +172,7 @@ impl<'a> SemanticBuilder<'a> {
             nodes: self.nodes,
             scopes: self.scope,
             symbols: self.symbols,
+            classes: self.class_table_builder.build(),
             module_record: Arc::clone(&self.module_record),
             jsdoc: self.jsdoc.build(),
             unused_labels: self.unused_labels.labels,
@@ -185,6 +189,7 @@ impl<'a> SemanticBuilder<'a> {
             nodes: self.nodes,
             scopes: self.scope,
             symbols: self.symbols,
+            classes: self.class_table_builder.build(),
             module_record: Arc::new(ModuleRecord::default()),
             jsdoc: self.jsdoc.build(),
             unused_labels: self.unused_labels.labels,
@@ -214,8 +219,12 @@ impl<'a> SemanticBuilder<'a> {
         }
     }
 
+    pub fn current_scope_flags(&self) -> ScopeFlags {
+        self.scope.get_flags(self.current_scope_id)
+    }
+
     pub fn strict_mode(&self) -> bool {
-        self.scope.get_flags(self.current_scope_id).is_strict_mode()
+        self.current_scope_flags().is_strict_mode()
             || self.current_node_flags.contains(NodeFlags::Class)
     }
 
@@ -410,16 +419,32 @@ impl<'a> SemanticBuilder<'a> {
             AstKind::Function(func) => {
                 self.function_stack.push(self.current_node_id);
                 func.bind(self);
+                self.add_current_node_id_to_current_scope();
                 self.make_all_namespaces_valuelike();
             }
             AstKind::ArrowExpression(_) => {
                 self.function_stack.push(self.current_node_id);
+                self.add_current_node_id_to_current_scope();
                 self.make_all_namespaces_valuelike();
             }
             AstKind::Class(class) => {
                 self.current_node_flags |= NodeFlags::Class;
                 class.bind(self);
                 self.make_all_namespaces_valuelike();
+            }
+            AstKind::ClassBody(body) => {
+                self.class_table_builder.declare_class_body(
+                    body,
+                    self.current_node_id,
+                    &self.nodes,
+                );
+            }
+            AstKind::PrivateIdentifier(ident) => {
+                self.class_table_builder.add_private_identifier_reference(
+                    ident,
+                    self.current_node_id,
+                    &self.nodes,
+                );
             }
             AstKind::FormalParameters(params) => {
                 params.bind(self);
@@ -496,6 +521,7 @@ impl<'a> SemanticBuilder<'a> {
         match kind {
             AstKind::Class(_) => {
                 self.current_node_flags -= NodeFlags::Class;
+                self.class_table_builder.pop_class();
             }
             AstKind::ModuleDeclaration(decl) => {
                 self.current_symbol_flags -= Self::symbol_flag_from_module_declaration(decl);
@@ -515,6 +541,10 @@ impl<'a> SemanticBuilder<'a> {
             }
             _ => {}
         }
+    }
+
+    fn add_current_node_id_to_current_scope(&mut self) {
+        self.scope.add_node_id(self.current_scope_id, self.current_node_id);
     }
 
     fn make_all_namespaces_valuelike(&mut self) {

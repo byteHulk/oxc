@@ -32,7 +32,7 @@ use self::{
     string_builder::AutoCow,
     trivia_builder::TriviaBuilder,
 };
-use crate::diagnostics;
+use crate::{diagnostics, MAX_LEN};
 
 #[derive(Debug, Clone)]
 pub struct LexerCheckpoint<'a> {
@@ -72,6 +72,11 @@ pub struct Lexer<'a> {
 #[allow(clippy::unused_self)]
 impl<'a> Lexer<'a> {
     pub fn new(allocator: &'a Allocator, source: &'a str, source_type: SourceType) -> Self {
+        // Token's start and end are u32s, so limit for length of source is u32::MAX bytes.
+        // Only a debug assertion is required, as parser checks length of source before calling
+        // this method.
+        debug_assert!(source.len() <= MAX_LEN, "Source length exceeds MAX_LEN");
+
         let token = Token {
             // the first token is at the start of file, so is allows on a new line
             is_on_new_line: true,
@@ -321,8 +326,6 @@ impl<'a> Lexer<'a> {
     /// Read each char and set the current token
     /// Whitespace and line terminators are skipped
     fn read_next_token(&mut self) -> Kind {
-        self.current.token.start = self.offset();
-
         loop {
             let offset = self.offset();
             self.current.token.start = offset;
@@ -358,6 +361,8 @@ impl<'a> Lexer<'a> {
                 Kind::Ident
             }
             c if is_irregular_whitespace(c) => {
+                self.trivia_builder
+                    .add_irregular_whitespace(self.current.token.start, self.offset());
                 self.consume_char();
                 Kind::WhiteSpace
             }
@@ -389,6 +394,11 @@ impl<'a> Lexer<'a> {
         // EOF
         self.trivia_builder.add_single_line_comment(start, self.offset());
         Kind::Comment
+    }
+
+    /// Section 12.1 Irregular White Space
+    fn skip_irregular_whitespace(&mut self) -> Kind {
+        Kind::WhiteSpace
     }
 
     /// Section 12.4 Multi Line Comment
@@ -1321,6 +1331,7 @@ const ERR: ByteHandler = |lexer| {
 
 // <TAB> <VT> <FF>
 const SPS: ByteHandler = |lexer| {
+    lexer.skip_irregular_whitespace();
     lexer.consume_char();
     Kind::WhiteSpace
 };
@@ -1587,8 +1598,7 @@ const BTO: ByteHandler = |lexer| {
 // \
 const ESC: ByteHandler = |lexer| {
     let mut builder = AutoCow::new(lexer);
-    let c = lexer.consume_char();
-    builder.push_matching(c);
+    lexer.consume_char();
     builder.force_allocation_without_current_ascii_char(lexer);
     lexer.identifier_unicode_escape_sequence(&mut builder, true);
     let text = lexer.identifier_name(builder);

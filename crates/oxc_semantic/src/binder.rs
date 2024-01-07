@@ -2,7 +2,10 @@
 
 #[allow(clippy::wildcard_imports)]
 use oxc_ast::ast::*;
-use oxc_ast::{syntax_directed_operations::BoundNames, AstKind};
+use oxc_ast::{
+    syntax_directed_operations::{BoundNames, IsSimpleParameterList},
+    AstKind,
+};
 use oxc_span::{Atom, SourceType};
 
 use crate::{scope::ScopeFlags, symbol::SymbolFlags, SemanticBuilder, VariableInfo};
@@ -38,7 +41,7 @@ impl<'a> Binder for VariableDeclarator<'a> {
         // Logic for scope hoisting `var`
 
         let mut var_scope_ids = vec![];
-        if !builder.scope.get_flags(current_scope_id).is_var() {
+        if !builder.current_scope_flags().is_var() {
             for scope_id in builder.scope.ancestors(current_scope_id).skip(1) {
                 if builder.scope.get_flags(scope_id).is_var() {
                     var_scope_ids.push(scope_id);
@@ -103,8 +106,7 @@ impl<'a> Binder for Function<'a> {
     fn bind(&self, builder: &mut SemanticBuilder) {
         let current_scope_id = builder.current_scope_id;
         if let Some(ident) = &self.id {
-            let flags = builder.scope.get_flags(current_scope_id);
-            if !flags.is_strict_mode()
+            if !builder.current_scope_flags().is_strict_mode()
                 && matches!(
                     builder.nodes.parent_kind(builder.current_node_id),
                     Some(AstKind::IfStatement(_))
@@ -122,7 +124,10 @@ impl<'a> Binder for Function<'a> {
                     if (parent_flags.is_strict_mode() || self.r#async || self.generator)
                         && !function_as_var(parent_flags, builder.source_type)
                     {
-                        (SymbolFlags::BlockScopedVariable, SymbolFlags::BlockScopedVariableExcludes)
+                        (
+                            SymbolFlags::Function | SymbolFlags::BlockScopedVariable,
+                            SymbolFlags::BlockScopedVariableExcludes,
+                        )
                     } else {
                         (
                             SymbolFlags::FunctionScopedVariable,
@@ -152,7 +157,7 @@ impl<'a> Binder for Function<'a> {
         }
 
         // bind scope flags: Constructor | GetAccessor | SetAccessor
-        debug_assert!(builder.scope.get_flags(current_scope_id).contains(ScopeFlags::Function));
+        debug_assert!(builder.current_scope_flags().contains(ScopeFlags::Function));
         if let Some(kind) = builder.nodes.parent_kind(builder.current_node_id) {
             match kind {
                 AstKind::MethodDefinition(def) => {
@@ -179,9 +184,29 @@ impl<'a> Binder for Function<'a> {
 }
 
 impl<'a> Binder for FormalParameters<'a> {
+    // Binds the formal parameters of a function or method.
     fn bind(&self, builder: &mut SemanticBuilder) {
         let includes = SymbolFlags::FunctionScopedVariable;
-        let excludes = SymbolFlags::FunctionScopedVariableExcludes;
+
+        let is_not_allowed_duplicate_parameters = matches!(
+                self.kind,
+                // ArrowFormalParameters: UniqueFormalParameters
+                FormalParameterKind::ArrowFormalParameters |
+                // UniqueFormalParameters : FormalParameters
+                // * It is a Syntax Error if BoundNames of FormalParameters contains any duplicate elements.
+                FormalParameterKind::UniqueFormalParameters
+            ) ||
+            // Multiple occurrences of the same BindingIdentifier in a FormalParameterList is only allowed for functions which have simple parameter lists and which are not defined in strict mode code.
+            builder.strict_mode() ||
+            // FormalParameters : FormalParameterList
+            // * It is a Syntax Error if IsSimpleParameterList of FormalParameterList is false and BoundNames of FormalParameterList contains any duplicate elements.
+            !self.is_simple_parameter_list();
+
+        let excludes = if is_not_allowed_duplicate_parameters {
+            SymbolFlags::FunctionScopedVariable | SymbolFlags::FunctionScopedVariableExcludes
+        } else {
+            SymbolFlags::FunctionScopedVariableExcludes
+        };
         let is_signature = self.kind == FormalParameterKind::Signature;
         self.bound_names(&mut |ident| {
             if !is_signature {

@@ -9679,15 +9679,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Expected `{` but found `=>`
-    ╭─[language/expressions/class/elements/syntax/early-errors/class-heritage-array-literal-arrow-heritage.js:22:1]
- 22 │ 
- 23 │ var C = class extends () => {} {
-    ·                          ─┬
-    ·                           ╰── `{` expected
- 24 │   
-    ╰────
-
-  × Expected `{` but found `=>`
     ╭─[language/expressions/class/elements/syntax/early-errors/class-heritage-array-literal-async-arrow-heritage.js:22:1]
  22 │ 
  23 │ var C = class extends async () => {} {
@@ -9696,14 +9687,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  24 │   
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-accessor-get.js:39:1]
- 39 │   g = this.f;
- 40 │   x = delete (g().#m);
-    ·                   ──
- 41 │ 
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-accessor-get.js:39:1]
  39 │   g = this.f;
@@ -9713,7 +9696,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-accessor-set.js:39:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-accessor-get.js:39:1]
  39 │   g = this.f;
  40 │   x = delete (g().#m);
     ·                   ──
@@ -9729,7 +9712,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-async-gen.js:39:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-accessor-set.js:39:1]
  39 │   g = this.f;
  40 │   x = delete (g().#m);
     ·                   ──
@@ -9745,7 +9728,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-async.js:39:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-async-gen.js:39:1]
  39 │   g = this.f;
  40 │   x = delete (g().#m);
     ·                   ──
@@ -9761,7 +9744,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-gen.js:39:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-async.js:39:1]
  39 │   g = this.f;
  40 │   x = delete (g().#m);
     ·                   ──
@@ -9777,7 +9760,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method.js:39:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-gen.js:39:1]
  39 │   g = this.f;
  40 │   x = delete (g().#m);
     ·                   ──
@@ -9793,7 +9776,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-no-reference.js:39:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method.js:39:1]
  39 │   g = this.f;
  40 │   x = delete (g().#m);
     ·                   ──
@@ -9805,6 +9788,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  39 │   g = this.f;
  40 │   x = delete (g().#m);
     ·               ──────
+ 41 │ 
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-no-reference.js:39:1]
+ 39 │   g = this.f;
+ 40 │   x = delete (g().#m);
+    ·                   ──
  41 │ 
     ╰────
 
@@ -9816,14 +9807,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  41 │ 
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method-accessor-get.js:39:1]
- 39 │   
- 40 │   x = delete (this.#m
-    ·                    ──
- 41 │ );
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method-accessor-get.js:39:1]
  39 │   
@@ -9833,7 +9816,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method-accessor-set.js:39:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method-accessor-get.js:39:1]
  39 │   
  40 │   x = delete (this.#m
     ·                    ──
@@ -9845,6 +9828,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  39 │   
  40 │   x = delete (this.#m
     ·               ───────
+ 41 │ );
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method-accessor-set.js:39:1]
+ 39 │   
+ 40 │   x = delete (this.#m
+    ·                    ──
  41 │ );
     ╰────
 
@@ -9872,14 +9863,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  41 │ );
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method.js:39:1]
- 39 │   
- 40 │   x = delete (this.#m
-    ·                    ──
- 41 │ );
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method.js:39:1]
  39 │   
@@ -9889,18 +9872,26 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method.js:39:1]
+ 39 │   
+ 40 │   x = delete (this.#m
+    ·                    ──
+ 41 │ );
+    ╰────
+
+  × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-no-reference.js:39:1]
  39 │   
  40 │   x = delete (this.#m);
-    ·                    ──
+    ·               ───────
  41 │ 
     ╰────
 
-  × Private fields can not be deleted
+  × Private field 'm' must be declared in an enclosing class
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-no-reference.js:39:1]
  39 │   
  40 │   x = delete (this.#m);
-    ·               ───────
+    ·                    ──
  41 │ 
     ╰────
 
@@ -9912,14 +9903,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  41 │ 
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-accessor-get.js:33:1]
- 33 │   g = this.f;
- 34 │   x = delete g().#m;
-    ·                  ──
- 35 │ 
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-accessor-get.js:33:1]
  33 │   g = this.f;
@@ -9929,7 +9912,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-accessor-set.js:33:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-accessor-get.js:33:1]
  33 │   g = this.f;
  34 │   x = delete g().#m;
     ·                  ──
@@ -9945,7 +9928,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-async-gen.js:33:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-accessor-set.js:33:1]
  33 │   g = this.f;
  34 │   x = delete g().#m;
     ·                  ──
@@ -9961,7 +9944,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-async.js:33:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-async-gen.js:33:1]
  33 │   g = this.f;
  34 │   x = delete g().#m;
     ·                  ──
@@ -9977,7 +9960,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-gen.js:33:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-async.js:33:1]
  33 │   g = this.f;
  34 │   x = delete g().#m;
     ·                  ──
@@ -9993,7 +9976,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method.js:33:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-gen.js:33:1]
  33 │   g = this.f;
  34 │   x = delete g().#m;
     ·                  ──
@@ -10009,7 +9992,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-no-reference.js:33:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method.js:33:1]
  33 │   g = this.f;
  34 │   x = delete g().#m;
     ·                  ──
@@ -10021,6 +10004,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  33 │   g = this.f;
  34 │   x = delete g().#m;
     ·              ──────
+ 35 │ 
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-no-reference.js:33:1]
+ 33 │   g = this.f;
+ 34 │   x = delete g().#m;
+    ·                  ──
  35 │ 
     ╰────
 
@@ -10032,14 +10023,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  35 │ 
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method-accessor-get.js:33:1]
- 33 │   
- 34 │   x = delete this.#m
-    ·                   ──
- 35 │ ;
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method-accessor-get.js:33:1]
  33 │   
@@ -10049,7 +10032,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method-accessor-set.js:33:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method-accessor-get.js:33:1]
  33 │   
  34 │   x = delete this.#m
     ·                   ──
@@ -10061,6 +10044,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  33 │   
  34 │   x = delete this.#m
     ·              ───────
+ 35 │ ;
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method-accessor-set.js:33:1]
+ 33 │   
+ 34 │   x = delete this.#m
+    ·                   ──
  35 │ ;
     ╰────
 
@@ -10088,14 +10079,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  35 │ ;
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method.js:33:1]
- 33 │   
- 34 │   x = delete this.#m
-    ·                   ──
- 35 │ ;
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method.js:33:1]
  33 │   
@@ -10105,18 +10088,26 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method.js:33:1]
+ 33 │   
+ 34 │   x = delete this.#m
+    ·                   ──
+ 35 │ ;
+    ╰────
+
+  × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-no-reference.js:33:1]
  33 │   
  34 │   x = delete this.#m;
-    ·                   ──
+    ·              ───────
  35 │ 
     ╰────
 
-  × Private fields can not be deleted
+  × Private field 'm' must be declared in an enclosing class
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-no-reference.js:33:1]
  33 │   
  34 │   x = delete this.#m;
-    ·              ───────
+    ·                   ──
  35 │ 
     ╰────
 
@@ -10128,14 +10119,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  35 │ 
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-accessor-get.js:39:1]
- 39 │   g = this.f;
- 40 │   x = delete ((g().#m));
-    ·                    ──
- 41 │ 
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-accessor-get.js:39:1]
  39 │   g = this.f;
@@ -10145,7 +10128,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-accessor-set.js:39:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-accessor-get.js:39:1]
  39 │   g = this.f;
  40 │   x = delete ((g().#m));
     ·                    ──
@@ -10161,7 +10144,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-async-gen.js:39:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-accessor-set.js:39:1]
  39 │   g = this.f;
  40 │   x = delete ((g().#m));
     ·                    ──
@@ -10177,7 +10160,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-async.js:39:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-async-gen.js:39:1]
  39 │   g = this.f;
  40 │   x = delete ((g().#m));
     ·                    ──
@@ -10193,7 +10176,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-gen.js:39:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-async.js:39:1]
  39 │   g = this.f;
  40 │   x = delete ((g().#m));
     ·                    ──
@@ -10209,7 +10192,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method.js:39:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-gen.js:39:1]
  39 │   g = this.f;
  40 │   x = delete ((g().#m));
     ·                    ──
@@ -10225,7 +10208,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-no-reference.js:39:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method.js:39:1]
  39 │   g = this.f;
  40 │   x = delete ((g().#m));
     ·                    ──
@@ -10237,6 +10220,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  39 │   g = this.f;
  40 │   x = delete ((g().#m));
     ·                ──────
+ 41 │ 
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-no-reference.js:39:1]
+ 39 │   g = this.f;
+ 40 │   x = delete ((g().#m));
+    ·                    ──
  41 │ 
     ╰────
 
@@ -10248,14 +10239,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  41 │ 
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method-accessor-get.js:39:1]
- 39 │   
- 40 │   x = delete ((this.#m
-    ·                     ──
- 41 │ ));
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method-accessor-get.js:39:1]
  39 │   
@@ -10265,7 +10248,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method-accessor-set.js:39:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method-accessor-get.js:39:1]
  39 │   
  40 │   x = delete ((this.#m
     ·                     ──
@@ -10277,6 +10260,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  39 │   
  40 │   x = delete ((this.#m
     ·                ───────
+ 41 │ ));
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method-accessor-set.js:39:1]
+ 39 │   
+ 40 │   x = delete ((this.#m
+    ·                     ──
  41 │ ));
     ╰────
 
@@ -10304,14 +10295,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  41 │ ));
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method.js:39:1]
- 39 │   
- 40 │   x = delete ((this.#m
-    ·                     ──
- 41 │ ));
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method.js:39:1]
  39 │   
@@ -10321,18 +10304,26 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method.js:39:1]
+ 39 │   
+ 40 │   x = delete ((this.#m
+    ·                     ──
+ 41 │ ));
+    ╰────
+
+  × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-no-reference.js:39:1]
  39 │   
  40 │   x = delete ((this.#m));
-    ·                     ──
+    ·                ───────
  41 │ 
     ╰────
 
-  × Private fields can not be deleted
+  × Private field 'm' must be declared in an enclosing class
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-no-reference.js:39:1]
  39 │   
  40 │   x = delete ((this.#m));
-    ·                ───────
+    ·                     ──
  41 │ 
     ╰────
 
@@ -10344,14 +10335,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  41 │ 
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-accessor-get.js:41:1]
- 41 │     var g = this.f;
- 42 │     delete (g().#m);
-    ·                 ──
- 43 │   }
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-accessor-get.js:41:1]
  41 │     var g = this.f;
@@ -10361,7 +10344,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-accessor-set.js:41:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-accessor-get.js:41:1]
  41 │     var g = this.f;
  42 │     delete (g().#m);
     ·                 ──
@@ -10377,7 +10360,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-async-gen.js:41:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-accessor-set.js:41:1]
  41 │     var g = this.f;
  42 │     delete (g().#m);
     ·                 ──
@@ -10393,7 +10376,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-async.js:41:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-async-gen.js:41:1]
  41 │     var g = this.f;
  42 │     delete (g().#m);
     ·                 ──
@@ -10409,7 +10392,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-gen.js:41:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-async.js:41:1]
  41 │     var g = this.f;
  42 │     delete (g().#m);
     ·                 ──
@@ -10425,7 +10408,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method.js:41:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-gen.js:41:1]
  41 │     var g = this.f;
  42 │     delete (g().#m);
     ·                 ──
@@ -10441,7 +10424,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-no-reference.js:41:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method.js:41:1]
  41 │     var g = this.f;
  42 │     delete (g().#m);
     ·                 ──
@@ -10453,6 +10436,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  41 │     var g = this.f;
  42 │     delete (g().#m);
     ·             ──────
+ 43 │   }
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-no-reference.js:41:1]
+ 41 │     var g = this.f;
+ 42 │     delete (g().#m);
+    ·                 ──
  43 │   }
     ╰────
 
@@ -10464,14 +10455,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  43 │   }
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method-accessor-get.js:41:1]
- 41 │     
- 42 │     delete (this.#m
-    ·                  ──
- 43 │ );
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method-accessor-get.js:41:1]
  41 │     
@@ -10481,7 +10464,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method-accessor-set.js:41:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method-accessor-get.js:41:1]
  41 │     
  42 │     delete (this.#m
     ·                  ──
@@ -10493,6 +10476,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  41 │     
  42 │     delete (this.#m
     ·             ───────
+ 43 │ );
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method-accessor-set.js:41:1]
+ 41 │     
+ 42 │     delete (this.#m
+    ·                  ──
  43 │ );
     ╰────
 
@@ -10520,14 +10511,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  43 │ );
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method.js:41:1]
- 41 │     
- 42 │     delete (this.#m
-    ·                  ──
- 43 │ );
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method.js:41:1]
  41 │     
@@ -10537,18 +10520,26 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method.js:41:1]
+ 41 │     
+ 42 │     delete (this.#m
+    ·                  ──
+ 43 │ );
+    ╰────
+
+  × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-no-reference.js:41:1]
  41 │     
  42 │     delete (this.#m);
-    ·                  ──
+    ·             ───────
  43 │   }
     ╰────
 
-  × Private fields can not be deleted
+  × Private field 'm' must be declared in an enclosing class
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-no-reference.js:41:1]
  41 │     
  42 │     delete (this.#m);
-    ·             ───────
+    ·                  ──
  43 │   }
     ╰────
 
@@ -10560,14 +10551,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  43 │   }
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-accessor-get.js:35:1]
- 35 │     var g = this.f;
- 36 │     delete g().#m;
-    ·                ──
- 37 │   }
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-accessor-get.js:35:1]
  35 │     var g = this.f;
@@ -10577,7 +10560,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-accessor-set.js:35:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-accessor-get.js:35:1]
  35 │     var g = this.f;
  36 │     delete g().#m;
     ·                ──
@@ -10593,7 +10576,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-async-gen.js:35:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-accessor-set.js:35:1]
  35 │     var g = this.f;
  36 │     delete g().#m;
     ·                ──
@@ -10609,7 +10592,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-async.js:35:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-async-gen.js:35:1]
  35 │     var g = this.f;
  36 │     delete g().#m;
     ·                ──
@@ -10625,7 +10608,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-gen.js:35:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-async.js:35:1]
  35 │     var g = this.f;
  36 │     delete g().#m;
     ·                ──
@@ -10641,7 +10624,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method.js:35:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-gen.js:35:1]
  35 │     var g = this.f;
  36 │     delete g().#m;
     ·                ──
@@ -10657,7 +10640,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-no-reference.js:35:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method.js:35:1]
  35 │     var g = this.f;
  36 │     delete g().#m;
     ·                ──
@@ -10669,6 +10652,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  35 │     var g = this.f;
  36 │     delete g().#m;
     ·            ──────
+ 37 │   }
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-no-reference.js:35:1]
+ 35 │     var g = this.f;
+ 36 │     delete g().#m;
+    ·                ──
  37 │   }
     ╰────
 
@@ -10680,14 +10671,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  37 │   }
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method-accessor-get.js:35:1]
- 35 │     
- 36 │     delete this.#m
-    ·                 ──
- 37 │ ;
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method-accessor-get.js:35:1]
  35 │     
@@ -10697,7 +10680,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method-accessor-set.js:35:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method-accessor-get.js:35:1]
  35 │     
  36 │     delete this.#m
     ·                 ──
@@ -10709,6 +10692,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  35 │     
  36 │     delete this.#m
     ·            ───────
+ 37 │ ;
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method-accessor-set.js:35:1]
+ 35 │     
+ 36 │     delete this.#m
+    ·                 ──
  37 │ ;
     ╰────
 
@@ -10736,14 +10727,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  37 │ ;
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method.js:35:1]
- 35 │     
- 36 │     delete this.#m
-    ·                 ──
- 37 │ ;
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method.js:35:1]
  35 │     
@@ -10753,18 +10736,26 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method.js:35:1]
+ 35 │     
+ 36 │     delete this.#m
+    ·                 ──
+ 37 │ ;
+    ╰────
+
+  × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-no-reference.js:35:1]
  35 │     
  36 │     delete this.#m;
-    ·                 ──
+    ·            ───────
  37 │   }
     ╰────
 
-  × Private fields can not be deleted
+  × Private field 'm' must be declared in an enclosing class
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-no-reference.js:35:1]
  35 │     
  36 │     delete this.#m;
-    ·            ───────
+    ·                 ──
  37 │   }
     ╰────
 
@@ -10776,14 +10767,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  37 │   }
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-accessor-get.js:41:1]
- 41 │     var g = this.f;
- 42 │     delete ((g().#m));
-    ·                  ──
- 43 │   }
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-accessor-get.js:41:1]
  41 │     var g = this.f;
@@ -10793,7 +10776,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-accessor-set.js:41:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-accessor-get.js:41:1]
  41 │     var g = this.f;
  42 │     delete ((g().#m));
     ·                  ──
@@ -10809,7 +10792,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-async-gen.js:41:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-accessor-set.js:41:1]
  41 │     var g = this.f;
  42 │     delete ((g().#m));
     ·                  ──
@@ -10825,7 +10808,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-async.js:41:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-async-gen.js:41:1]
  41 │     var g = this.f;
  42 │     delete ((g().#m));
     ·                  ──
@@ -10841,7 +10824,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-gen.js:41:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-async.js:41:1]
  41 │     var g = this.f;
  42 │     delete ((g().#m));
     ·                  ──
@@ -10857,7 +10840,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method.js:41:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-gen.js:41:1]
  41 │     var g = this.f;
  42 │     delete ((g().#m));
     ·                  ──
@@ -10873,7 +10856,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-no-reference.js:41:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method.js:41:1]
  41 │     var g = this.f;
  42 │     delete ((g().#m));
     ·                  ──
@@ -10885,6 +10868,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  41 │     var g = this.f;
  42 │     delete ((g().#m));
     ·              ──────
+ 43 │   }
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-no-reference.js:41:1]
+ 41 │     var g = this.f;
+ 42 │     delete ((g().#m));
+    ·                  ──
  43 │   }
     ╰────
 
@@ -10896,14 +10887,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  43 │   }
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method-accessor-get.js:41:1]
- 41 │     
- 42 │     delete ((this.#m
-    ·                   ──
- 43 │ ));
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method-accessor-get.js:41:1]
  41 │     
@@ -10913,7 +10896,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method-accessor-set.js:41:1]
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method-accessor-get.js:41:1]
  41 │     
  42 │     delete ((this.#m
     ·                   ──
@@ -10925,6 +10908,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  41 │     
  42 │     delete ((this.#m
     ·              ───────
+ 43 │ ));
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method-accessor-set.js:41:1]
+ 41 │     
+ 42 │     delete ((this.#m
+    ·                   ──
  43 │ ));
     ╰────
 
@@ -10952,14 +10943,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  43 │ ));
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method.js:41:1]
- 41 │     
- 42 │     delete ((this.#m
-    ·                   ──
- 43 │ ));
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method.js:41:1]
  41 │     
@@ -10969,18 +10952,26 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
+    ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method.js:41:1]
+ 41 │     
+ 42 │     delete ((this.#m
+    ·                   ──
+ 43 │ ));
+    ╰────
+
+  × Private fields can not be deleted
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-no-reference.js:41:1]
  41 │     
  42 │     delete ((this.#m));
-    ·                   ──
+    ·              ───────
  43 │   }
     ╰────
 
-  × Private fields can not be deleted
+  × Private field 'm' must be declared in an enclosing class
     ╭─[language/expressions/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-no-reference.js:41:1]
  41 │     
  42 │     delete ((this.#m));
-    ·              ───────
+    ·                   ──
  43 │   }
     ╰────
 
@@ -14105,9 +14096,9 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╭─[language/expressions/function/param-duplicated-strict-3.js:21:1]
  21 │ 
  22 │ (function (param, param, param) { });
-    ·                   ──┬──  ──┬──
-    ·                     │      ╰── It can not be redeclared here
-    ·                     ╰── `param` has already been declared here
+    ·            ──┬──         ──┬──
+    ·              │             ╰── It can not be redeclared here
+    ·              ╰── `param` has already been declared here
     ╰────
 
   × Identifier `param` has already been declared
@@ -14141,9 +14132,9 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╭─[language/expressions/function/param-duplicated-strict-body-3.js:20:1]
  20 │ 
  21 │ (function (param, param, param) { 'use strict'; });
-    ·                   ──┬──  ──┬──
-    ·                     │      ╰── It can not be redeclared here
-    ·                     ╰── `param` has already been declared here
+    ·            ──┬──         ──┬──
+    ·              │             ╰── It can not be redeclared here
+    ·              ╰── `param` has already been declared here
     ╰────
 
   × Cannot assign to 'eval' in strict mode
@@ -14743,15 +14734,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ·               ──
  25 │   }
     ╰────
-
-  × Expected a semicolon or an implicit semicolon after a statement, but found none
-    ╭─[language/expressions/in/private-field-invalid-rhs.js:23:1]
- 23 │   constructor() {
- 24 │     #field in () => {};
-    ·                 ─
- 25 │   }
-    ╰────
-  help: Try insert a semicolon here
 
   × The keyword 'yield' is reserved
     ╭─[language/expressions/in/private-field-rhs-yield-absent.js:30:1]
@@ -17965,15 +17947,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  15 │ 
  16 │ var ⸯ; // U+2E2F
     ·     ─
-    ╰────
-
-  × Identifier `x` has already been declared
-    ╭─[language/import/dup-bound-names.js:15:1]
- 15 │ 
- 16 │ import { x, y as x } from 'z';
-    ·          ┬       ┬
-    ·          │       ╰── It can not be redeclared here
-    ·          ╰── `x` has already been declared here
     ╰────
 
   × Identifier `x` has already been declared
@@ -25183,15 +25156,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Expected `{` but found `=>`
-    ╭─[language/statements/class/elements/syntax/early-errors/class-heritage-array-literal-arrow-heritage.js:22:1]
- 22 │ 
- 23 │ class C extends () => {} {
-    ·                    ─┬
-    ·                     ╰── `{` expected
- 24 │   
-    ╰────
-
-  × Expected `{` but found `=>`
     ╭─[language/statements/class/elements/syntax/early-errors/class-heritage-array-literal-async-arrow-heritage.js:22:1]
  22 │ 
  23 │ class C extends async () => {} {
@@ -25200,14 +25164,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  24 │   
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-accessor-get.js:36:1]
- 36 │   g = this.f;
- 37 │   x = delete (g().#m);
-    ·                   ──
- 38 │   f() {
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-accessor-get.js:36:1]
  36 │   g = this.f;
@@ -25217,7 +25173,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-accessor-set.js:36:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-accessor-get.js:36:1]
  36 │   g = this.f;
  37 │   x = delete (g().#m);
     ·                   ──
@@ -25233,7 +25189,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-async-gen.js:36:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-accessor-set.js:36:1]
  36 │   g = this.f;
  37 │   x = delete (g().#m);
     ·                   ──
@@ -25249,7 +25205,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-async.js:36:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-async-gen.js:36:1]
  36 │   g = this.f;
  37 │   x = delete (g().#m);
     ·                   ──
@@ -25265,7 +25221,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-gen.js:36:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-async.js:36:1]
  36 │   g = this.f;
  37 │   x = delete (g().#m);
     ·                   ──
@@ -25281,7 +25237,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method.js:36:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method-gen.js:36:1]
  36 │   g = this.f;
  37 │   x = delete (g().#m);
     ·                   ──
@@ -25297,7 +25253,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-no-reference.js:36:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-method.js:36:1]
  36 │   g = this.f;
  37 │   x = delete (g().#m);
     ·                   ──
@@ -25309,6 +25265,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  36 │   g = this.f;
  37 │   x = delete (g().#m);
     ·               ──────
+ 38 │   f() {
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-call-expression-private-no-reference.js:36:1]
+ 36 │   g = this.f;
+ 37 │   x = delete (g().#m);
+    ·                   ──
  38 │   f() {
     ╰────
 
@@ -25320,14 +25284,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  38 │   f() {
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method-accessor-get.js:36:1]
- 36 │   
- 37 │   x = delete (this.#m
-    ·                    ──
- 38 │ );
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method-accessor-get.js:36:1]
  36 │   
@@ -25337,7 +25293,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method-accessor-set.js:36:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method-accessor-get.js:36:1]
  36 │   
  37 │   x = delete (this.#m
     ·                    ──
@@ -25349,6 +25305,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  36 │   
  37 │   x = delete (this.#m
     ·               ───────
+ 38 │ );
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method-accessor-set.js:36:1]
+ 36 │   
+ 37 │   x = delete (this.#m
+    ·                    ──
  38 │ );
     ╰────
 
@@ -25376,14 +25340,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  38 │ );
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method.js:36:1]
- 36 │   
- 37 │   x = delete (this.#m
-    ·                    ──
- 38 │ );
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method.js:36:1]
  36 │   
@@ -25393,18 +25349,26 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-method.js:36:1]
+ 36 │   
+ 37 │   x = delete (this.#m
+    ·                    ──
+ 38 │ );
+    ╰────
+
+  × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-no-reference.js:36:1]
  36 │   
  37 │   x = delete (this.#m);
-    ·                    ──
+    ·               ───────
  38 │   
     ╰────
 
-  × Private fields can not be deleted
+  × Private field 'm' must be declared in an enclosing class
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-covered-err-delete-member-expression-private-no-reference.js:36:1]
  36 │   
  37 │   x = delete (this.#m);
-    ·               ───────
+    ·                    ──
  38 │   
     ╰────
 
@@ -25416,14 +25380,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  38 │   
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-accessor-get.js:33:1]
- 33 │   g = this.f;
- 34 │   x = delete g().#m;
-    ·                  ──
- 35 │   f() {
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-accessor-get.js:33:1]
  33 │   g = this.f;
@@ -25433,7 +25389,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-accessor-set.js:33:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-accessor-get.js:33:1]
  33 │   g = this.f;
  34 │   x = delete g().#m;
     ·                  ──
@@ -25449,7 +25405,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-async-gen.js:33:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-accessor-set.js:33:1]
  33 │   g = this.f;
  34 │   x = delete g().#m;
     ·                  ──
@@ -25465,7 +25421,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-async.js:33:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-async-gen.js:33:1]
  33 │   g = this.f;
  34 │   x = delete g().#m;
     ·                  ──
@@ -25481,7 +25437,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-gen.js:33:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-async.js:33:1]
  33 │   g = this.f;
  34 │   x = delete g().#m;
     ·                  ──
@@ -25497,7 +25453,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method.js:33:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method-gen.js:33:1]
  33 │   g = this.f;
  34 │   x = delete g().#m;
     ·                  ──
@@ -25513,7 +25469,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-no-reference.js:33:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-method.js:33:1]
  33 │   g = this.f;
  34 │   x = delete g().#m;
     ·                  ──
@@ -25525,6 +25481,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  33 │   g = this.f;
  34 │   x = delete g().#m;
     ·              ──────
+ 35 │   f() {
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-call-expression-private-no-reference.js:33:1]
+ 33 │   g = this.f;
+ 34 │   x = delete g().#m;
+    ·                  ──
  35 │   f() {
     ╰────
 
@@ -25536,14 +25500,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  35 │   f() {
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method-accessor-get.js:33:1]
- 33 │   
- 34 │   x = delete this.#m
-    ·                   ──
- 35 │ ;
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method-accessor-get.js:33:1]
  33 │   
@@ -25553,7 +25509,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method-accessor-set.js:33:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method-accessor-get.js:33:1]
  33 │   
  34 │   x = delete this.#m
     ·                   ──
@@ -25565,6 +25521,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  33 │   
  34 │   x = delete this.#m
     ·              ───────
+ 35 │ ;
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method-accessor-set.js:33:1]
+ 33 │   
+ 34 │   x = delete this.#m
+    ·                   ──
  35 │ ;
     ╰────
 
@@ -25592,14 +25556,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  35 │ ;
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method.js:33:1]
- 33 │   
- 34 │   x = delete this.#m
-    ·                   ──
- 35 │ ;
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method.js:33:1]
  33 │   
@@ -25609,18 +25565,26 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-method.js:33:1]
+ 33 │   
+ 34 │   x = delete this.#m
+    ·                   ──
+ 35 │ ;
+    ╰────
+
+  × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-no-reference.js:33:1]
  33 │   
  34 │   x = delete this.#m;
-    ·                   ──
+    ·              ───────
  35 │   
     ╰────
 
-  × Private fields can not be deleted
+  × Private field 'm' must be declared in an enclosing class
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-err-delete-member-expression-private-no-reference.js:33:1]
  33 │   
  34 │   x = delete this.#m;
-    ·              ───────
+    ·                   ──
  35 │   
     ╰────
 
@@ -25632,14 +25596,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  35 │   
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-accessor-get.js:36:1]
- 36 │   g = this.f;
- 37 │   x = delete ((g().#m));
-    ·                    ──
- 38 │ 
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-accessor-get.js:36:1]
  36 │   g = this.f;
@@ -25649,7 +25605,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-accessor-set.js:36:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-accessor-get.js:36:1]
  36 │   g = this.f;
  37 │   x = delete ((g().#m));
     ·                    ──
@@ -25665,7 +25621,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-async-gen.js:36:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-accessor-set.js:36:1]
  36 │   g = this.f;
  37 │   x = delete ((g().#m));
     ·                    ──
@@ -25681,7 +25637,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-async.js:36:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-async-gen.js:36:1]
  36 │   g = this.f;
  37 │   x = delete ((g().#m));
     ·                    ──
@@ -25697,7 +25653,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-gen.js:36:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-async.js:36:1]
  36 │   g = this.f;
  37 │   x = delete ((g().#m));
     ·                    ──
@@ -25713,7 +25669,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method.js:36:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method-gen.js:36:1]
  36 │   g = this.f;
  37 │   x = delete ((g().#m));
     ·                    ──
@@ -25729,7 +25685,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-no-reference.js:36:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-method.js:36:1]
  36 │   g = this.f;
  37 │   x = delete ((g().#m));
     ·                    ──
@@ -25741,6 +25697,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  36 │   g = this.f;
  37 │   x = delete ((g().#m));
     ·                ──────
+ 38 │ 
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-call-expression-private-no-reference.js:36:1]
+ 36 │   g = this.f;
+ 37 │   x = delete ((g().#m));
+    ·                    ──
  38 │ 
     ╰────
 
@@ -25752,14 +25716,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  38 │ 
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method-accessor-get.js:36:1]
- 36 │   
- 37 │   x = delete ((this.#m
-    ·                     ──
- 38 │ ));
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method-accessor-get.js:36:1]
  36 │   
@@ -25769,7 +25725,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method-accessor-set.js:36:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method-accessor-get.js:36:1]
  36 │   
  37 │   x = delete ((this.#m
     ·                     ──
@@ -25781,6 +25737,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  36 │   
  37 │   x = delete ((this.#m
     ·                ───────
+ 38 │ ));
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method-accessor-set.js:36:1]
+ 36 │   
+ 37 │   x = delete ((this.#m
+    ·                     ──
  38 │ ));
     ╰────
 
@@ -25808,14 +25772,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  38 │ ));
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method.js:36:1]
- 36 │   
- 37 │   x = delete ((this.#m
-    ·                     ──
- 38 │ ));
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method.js:36:1]
  36 │   
@@ -25825,18 +25781,26 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-method.js:36:1]
+ 36 │   
+ 37 │   x = delete ((this.#m
+    ·                     ──
+ 38 │ ));
+    ╰────
+
+  × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-no-reference.js:36:1]
  36 │   
  37 │   x = delete ((this.#m));
-    ·                     ──
+    ·                ───────
  38 │ 
     ╰────
 
-  × Private fields can not be deleted
+  × Private field 'm' must be declared in an enclosing class
     ╭─[language/statements/class/elements/syntax/early-errors/delete/field-delete-twice-covered-err-delete-member-expression-private-no-reference.js:36:1]
  36 │   
  37 │   x = delete ((this.#m));
-    ·                ───────
+    ·                     ──
  38 │ 
     ╰────
 
@@ -25848,14 +25812,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  38 │ 
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-accessor-get.js:41:1]
- 41 │     var g = this.f;
- 42 │     delete (g().#m);
-    ·                 ──
- 43 │   }
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-accessor-get.js:41:1]
  41 │     var g = this.f;
@@ -25865,7 +25821,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-accessor-set.js:41:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-accessor-get.js:41:1]
  41 │     var g = this.f;
  42 │     delete (g().#m);
     ·                 ──
@@ -25881,7 +25837,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-async-gen.js:41:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-accessor-set.js:41:1]
  41 │     var g = this.f;
  42 │     delete (g().#m);
     ·                 ──
@@ -25897,7 +25853,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-async.js:41:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-async-gen.js:41:1]
  41 │     var g = this.f;
  42 │     delete (g().#m);
     ·                 ──
@@ -25913,7 +25869,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-gen.js:41:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-async.js:41:1]
  41 │     var g = this.f;
  42 │     delete (g().#m);
     ·                 ──
@@ -25929,7 +25885,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method.js:41:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method-gen.js:41:1]
  41 │     var g = this.f;
  42 │     delete (g().#m);
     ·                 ──
@@ -25945,7 +25901,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-no-reference.js:41:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-method.js:41:1]
  41 │     var g = this.f;
  42 │     delete (g().#m);
     ·                 ──
@@ -25957,6 +25913,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  41 │     var g = this.f;
  42 │     delete (g().#m);
     ·             ──────
+ 43 │   }
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-call-expression-private-no-reference.js:41:1]
+ 41 │     var g = this.f;
+ 42 │     delete (g().#m);
+    ·                 ──
  43 │   }
     ╰────
 
@@ -25968,14 +25932,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  43 │   }
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method-accessor-get.js:41:1]
- 41 │     
- 42 │     delete (this.#m
-    ·                  ──
- 43 │ );
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method-accessor-get.js:41:1]
  41 │     
@@ -25985,7 +25941,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method-accessor-set.js:41:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method-accessor-get.js:41:1]
  41 │     
  42 │     delete (this.#m
     ·                  ──
@@ -25997,6 +25953,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  41 │     
  42 │     delete (this.#m
     ·             ───────
+ 43 │ );
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method-accessor-set.js:41:1]
+ 41 │     
+ 42 │     delete (this.#m
+    ·                  ──
  43 │ );
     ╰────
 
@@ -26024,14 +25988,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  43 │ );
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method.js:41:1]
- 41 │     
- 42 │     delete (this.#m
-    ·                  ──
- 43 │ );
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method.js:41:1]
  41 │     
@@ -26041,18 +25997,26 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-method.js:41:1]
+ 41 │     
+ 42 │     delete (this.#m
+    ·                  ──
+ 43 │ );
+    ╰────
+
+  × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-no-reference.js:41:1]
  41 │     
  42 │     delete (this.#m);
-    ·                  ──
+    ·             ───────
  43 │   }
     ╰────
 
-  × Private fields can not be deleted
+  × Private field 'm' must be declared in an enclosing class
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-covered-err-delete-member-expression-private-no-reference.js:41:1]
  41 │     
  42 │     delete (this.#m);
-    ·             ───────
+    ·                  ──
  43 │   }
     ╰────
 
@@ -26064,14 +26028,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  43 │   }
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-accessor-get.js:35:1]
- 35 │     var g = this.f;
- 36 │     delete g().#m;
-    ·                ──
- 37 │   }
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-accessor-get.js:35:1]
  35 │     var g = this.f;
@@ -26081,7 +26037,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-accessor-set.js:35:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-accessor-get.js:35:1]
  35 │     var g = this.f;
  36 │     delete g().#m;
     ·                ──
@@ -26097,7 +26053,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-async-gen.js:35:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-accessor-set.js:35:1]
  35 │     var g = this.f;
  36 │     delete g().#m;
     ·                ──
@@ -26113,7 +26069,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-async.js:35:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-async-gen.js:35:1]
  35 │     var g = this.f;
  36 │     delete g().#m;
     ·                ──
@@ -26129,7 +26085,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-gen.js:35:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-async.js:35:1]
  35 │     var g = this.f;
  36 │     delete g().#m;
     ·                ──
@@ -26145,7 +26101,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method.js:35:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method-gen.js:35:1]
  35 │     var g = this.f;
  36 │     delete g().#m;
     ·                ──
@@ -26161,7 +26117,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-no-reference.js:35:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-method.js:35:1]
  35 │     var g = this.f;
  36 │     delete g().#m;
     ·                ──
@@ -26173,6 +26129,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  35 │     var g = this.f;
  36 │     delete g().#m;
     ·            ──────
+ 37 │   }
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-call-expression-private-no-reference.js:35:1]
+ 35 │     var g = this.f;
+ 36 │     delete g().#m;
+    ·                ──
  37 │   }
     ╰────
 
@@ -26184,14 +26148,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  37 │   }
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method-accessor-get.js:35:1]
- 35 │     
- 36 │     delete this.#m
-    ·                 ──
- 37 │ ;
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method-accessor-get.js:35:1]
  35 │     
@@ -26201,7 +26157,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method-accessor-set.js:35:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method-accessor-get.js:35:1]
  35 │     
  36 │     delete this.#m
     ·                 ──
@@ -26213,6 +26169,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  35 │     
  36 │     delete this.#m
     ·            ───────
+ 37 │ ;
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method-accessor-set.js:35:1]
+ 35 │     
+ 36 │     delete this.#m
+    ·                 ──
  37 │ ;
     ╰────
 
@@ -26240,14 +26204,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  37 │ ;
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method.js:35:1]
- 35 │     
- 36 │     delete this.#m
-    ·                 ──
- 37 │ ;
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method.js:35:1]
  35 │     
@@ -26257,18 +26213,26 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-method.js:35:1]
+ 35 │     
+ 36 │     delete this.#m
+    ·                 ──
+ 37 │ ;
+    ╰────
+
+  × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-no-reference.js:35:1]
  35 │     
  36 │     delete this.#m;
-    ·                 ──
+    ·            ───────
  37 │   }
     ╰────
 
-  × Private fields can not be deleted
+  × Private field 'm' must be declared in an enclosing class
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-err-delete-member-expression-private-no-reference.js:35:1]
  35 │     
  36 │     delete this.#m;
-    ·            ───────
+    ·                 ──
  37 │   }
     ╰────
 
@@ -26280,14 +26244,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  37 │   }
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-accessor-get.js:41:1]
- 41 │     var g = this.f;
- 42 │     delete ((g().#m));
-    ·                  ──
- 43 │   }
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-accessor-get.js:41:1]
  41 │     var g = this.f;
@@ -26297,7 +26253,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-accessor-set.js:41:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-accessor-get.js:41:1]
  41 │     var g = this.f;
  42 │     delete ((g().#m));
     ·                  ──
@@ -26313,7 +26269,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-async-gen.js:41:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-accessor-set.js:41:1]
  41 │     var g = this.f;
  42 │     delete ((g().#m));
     ·                  ──
@@ -26329,7 +26285,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-async.js:41:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-async-gen.js:41:1]
  41 │     var g = this.f;
  42 │     delete ((g().#m));
     ·                  ──
@@ -26345,7 +26301,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-gen.js:41:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-async.js:41:1]
  41 │     var g = this.f;
  42 │     delete ((g().#m));
     ·                  ──
@@ -26361,7 +26317,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method.js:41:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method-gen.js:41:1]
  41 │     var g = this.f;
  42 │     delete ((g().#m));
     ·                  ──
@@ -26377,7 +26333,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-no-reference.js:41:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-method.js:41:1]
  41 │     var g = this.f;
  42 │     delete ((g().#m));
     ·                  ──
@@ -26389,6 +26345,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  41 │     var g = this.f;
  42 │     delete ((g().#m));
     ·              ──────
+ 43 │   }
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-call-expression-private-no-reference.js:41:1]
+ 41 │     var g = this.f;
+ 42 │     delete ((g().#m));
+    ·                  ──
  43 │   }
     ╰────
 
@@ -26400,14 +26364,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  43 │   }
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method-accessor-get.js:41:1]
- 41 │     
- 42 │     delete ((this.#m
-    ·                   ──
- 43 │ ));
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method-accessor-get.js:41:1]
  41 │     
@@ -26417,7 +26373,7 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method-accessor-set.js:41:1]
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method-accessor-get.js:41:1]
  41 │     
  42 │     delete ((this.#m
     ·                   ──
@@ -26429,6 +26385,14 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  41 │     
  42 │     delete ((this.#m
     ·              ───────
+ 43 │ ));
+    ╰────
+
+  × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method-accessor-set.js:41:1]
+ 41 │     
+ 42 │     delete ((this.#m
+    ·                   ──
  43 │ ));
     ╰────
 
@@ -26456,14 +26420,6 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
  43 │ ));
     ╰────
 
-  × Private field 'm' must be declared in an enclosing class
-    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method.js:41:1]
- 41 │     
- 42 │     delete ((this.#m
-    ·                   ──
- 43 │ ));
-    ╰────
-
   × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method.js:41:1]
  41 │     
@@ -26473,18 +26429,26 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╰────
 
   × Private field 'm' must be declared in an enclosing class
+    ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-method.js:41:1]
+ 41 │     
+ 42 │     delete ((this.#m
+    ·                   ──
+ 43 │ ));
+    ╰────
+
+  × Private fields can not be deleted
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-no-reference.js:41:1]
  41 │     
  42 │     delete ((this.#m));
-    ·                   ──
+    ·              ───────
  43 │   }
     ╰────
 
-  × Private fields can not be deleted
+  × Private field 'm' must be declared in an enclosing class
     ╭─[language/statements/class/elements/syntax/early-errors/delete/method-delete-twice-covered-err-delete-member-expression-private-no-reference.js:41:1]
  41 │     
  42 │     delete ((this.#m));
-    ·              ───────
+    ·                   ──
  43 │   }
     ╰────
 
@@ -31692,9 +31656,9 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╭─[language/statements/function/param-duplicated-strict-3.js:21:1]
  21 │ 
  22 │ function _13_1_7_fun(param, param, param) { }
-    ·                             ──┬──  ──┬──
-    ·                               │      ╰── It can not be redeclared here
-    ·                               ╰── `param` has already been declared here
+    ·                      ──┬──         ──┬──
+    ·                        │             ╰── It can not be redeclared here
+    ·                        ╰── `param` has already been declared here
     ╰────
 
   × Identifier `param` has already been declared
@@ -31728,9 +31692,9 @@ Expect Syntax Error: "language/import/import-attributes/json-named-bindings.js"
     ╭─[language/statements/function/param-duplicated-strict-body-3.js:21:1]
  21 │ 
  22 │ function _13_1_28_fun(param, param, param) { 'use strict'; }
-    ·                              ──┬──  ──┬──
-    ·                                │      ╰── It can not be redeclared here
-    ·                                ╰── `param` has already been declared here
+    ·                       ──┬──         ──┬──
+    ·                         │             ╰── It can not be redeclared here
+    ·                         ╰── `param` has already been declared here
     ╰────
 
   × Cannot assign to 'eval' in strict mode

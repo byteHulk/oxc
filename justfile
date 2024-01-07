@@ -78,6 +78,9 @@ benchmark:
 new-rule name:
   cargo run -p rulegen {{name}}
 
+new-deepscan-rule name:
+  cargo run -p rulegen {{name}} deepscan
+
 new-jest-rule name:
   cargo run -p rulegen {{name}} jest
 
@@ -92,6 +95,12 @@ new-react-rule name:
 
 new-jsx-a11y-rule name:
   cargo run -p rulegen {{name}} jsx-a11y
+
+new-oxc-rule name:
+  cargo run -p rulegen {{name}} oxc
+
+new-nextjs-rule name:
+  cargo run -p rulegen {{name}} nextjs
 
 # Sync all submodules with their own remote repos (this is for Boshen updating the submodules)
 sync:

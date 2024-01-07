@@ -1,6 +1,4 @@
-use phf::phf_set;
-
-use oxc_ast::{ast::JSXElementName, AstKind};
+use oxc_ast::AstKind;
 use oxc_diagnostics::{
     miette::{self, Diagnostic},
     thiserror::Error,
@@ -8,7 +6,13 @@ use oxc_diagnostics::{
 use oxc_macros::declare_oxc_lint;
 use oxc_span::Span;
 
-use crate::{context::LintContext, rule::Rule, utils::has_jsx_prop, AstNode};
+use crate::{
+    context::LintContext,
+    globals::HTML_TAG,
+    rule::Rule,
+    utils::{get_element_type, has_jsx_prop},
+    AstNode,
+};
 
 #[derive(Debug, Error, Diagnostic)]
 #[error("eslint-plugin-jsx-a11y(no-autofocus): The `autofocus` attribute is found here, which can cause usability issues for sighted and non-sighted users")]
@@ -69,16 +73,18 @@ impl Rule for NoAutofocus {
     fn from_configuration(value: serde_json::Value) -> Self {
         let mut no_focus = Self::default();
 
-        let _ = value.as_array().unwrap().iter().find(|v| {
-            if let serde_json::Value::Object(obj) = v {
-                let config = obj.get("ignoreNonDOM").unwrap();
-                if let serde_json::Value::Bool(val) = config {
-                    no_focus.set_option(*val);
+        if let Some(arr) = value.as_array() {
+            if arr.iter().any(|v| {
+                if let serde_json::Value::Object(obj) = v {
+                    if let Some(serde_json::Value::Bool(val)) = obj.get("ignoreNonDOM") {
+                        return *val;
+                    }
                 }
-                return true;
+                false
+            }) {
+                no_focus.set_option(true);
             }
-            false
-        });
+        }
 
         no_focus
     }
@@ -86,12 +92,11 @@ impl Rule for NoAutofocus {
     fn run<'a>(&self, node: &AstNode<'a>, ctx: &LintContext<'a>) {
         if let AstKind::JSXElement(jsx_el) = node.kind() {
             if let Option::Some(autofocus) = has_jsx_prop(&jsx_el.opening_element, "autoFocus") {
+                let Some(element_type) = get_element_type(ctx, &jsx_el.opening_element) else {
+                    return;
+                };
                 if self.ignore_non_dom {
-                    let JSXElementName::Identifier(ident) = &jsx_el.opening_element.name else {
-                        return;
-                    };
-                    let name = ident.name.as_str();
-                    if HTML_TAG.contains(name) {
+                    if HTML_TAG.contains(&element_type) {
                         if let oxc_ast::ast::JSXAttributeItem::Attribute(attr) = autofocus {
                             ctx.diagnostic(NoAutofocusDiagnostic(attr.span));
                         }
@@ -107,193 +112,49 @@ impl Rule for NoAutofocus {
     }
 }
 
-const HTML_TAG: phf::Set<&'static str> = phf_set! {
-    "a",
-    "abbr",
-    "acronym",
-    "address",
-    "applet",
-    "area",
-    "article",
-    "aside",
-    "audio",
-    "b",
-    "base",
-    "basefont",
-    "bdi",
-    "bdo",
-    "bgsound",
-    "big",
-    "blink",
-    "blockquote",
-    "body",
-    "br",
-    "button",
-    "canvas",
-    "caption",
-    "center",
-    "cite",
-    "code",
-    "col",
-    "colgroup",
-    "command",
-    "content",
-    "data",
-    "datalist",
-    "dd",
-    "del",
-    "details",
-    "dfn",
-    "dialog",
-    "dir",
-    "div",
-    "dl",
-    "dt",
-    "element",
-    "em",
-    "embed",
-    "fieldset",
-    "figcaption",
-    "figure",
-    "font",
-    "footer",
-    "form",
-    "frame",
-    "frameset",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "head",
-    "header",
-    "hgroup",
-    "hr",
-    "html",
-    "i",
-    "iframe",
-    "image",
-    "img",
-    "input",
-    "ins",
-    "isindex",
-    "kbd",
-    "keygen",
-    "label",
-    "legend",
-    "li",
-    "link",
-    "listing",
-    "main",
-    "map",
-    "mark",
-    "marquee",
-    "math",
-    "menu",
-    "menuitem",
-    "meta",
-    "meter",
-    "multicol",
-    "nav",
-    "nextid",
-    "nobr",
-    "noembed",
-    "noframes",
-    "noscript",
-    "object",
-    "ol",
-    "optgroup",
-    "option",
-    "output",
-    "p",
-    "param",
-    "picture",
-    "plaintext",
-    "pre",
-    "progress",
-    "q",
-    "rb",
-    "rbc",
-    "rp",
-    "rt",
-    "rtc",
-    "ruby",
-    "s",
-    "samp",
-    "script",
-    "search",
-    "section",
-    "select",
-    "shadow",
-    "slot",
-    "small",
-    "source",
-    "spacer",
-    "span",
-    "strike",
-    "strong",
-    "style",
-    "sub",
-    "summary",
-    "sup",
-    "svg",
-    "table",
-    "tbody",
-    "td",
-    "template",
-    "textarea",
-    "tfoot",
-    "th",
-    "thead",
-    "time",
-    "title",
-    "tr",
-    "track",
-    "tt",
-    "u",
-    "ul",
-    "var",
-    "video",
-    "wbr",
-    "xmp",
-};
-
 #[test]
 fn test() {
     use crate::tester::Tester;
-    fn array() -> serde_json::Value {
+    fn config() -> serde_json::Value {
         serde_json::json!([2,{
             "ignoreNonDOM": true
         }])
     }
 
+    fn settings() -> serde_json::Value {
+        serde_json::json!({
+            "jsx-a11y": {
+                "components": {
+                    "Button": "button",
+                }
+            }
+        })
+    }
+
     let pass = vec![
-        ("<div />;", None),
-        ("<div autofocus />;", None),
-        ("<input autofocus='true' />;", None),
-        ("<Foo bar />", None),
-        ("<Button />", None),
-        ("<Foo autoFocus />", Some(array())),
-        ("<div><div autofocus /></div>", Some(array())),
-        // TODO we need components_settings to test this
-        // ("<Button />", Some(serde_json::json!(ignoreNonDOMSchema))),
-        // ("<Button />", Some(serde_json::json!(ignoreNonDOMSchema)), setting),
+        ("<div />;", None, None),
+        ("<div autofocus />;", None, None),
+        ("<input autofocus='true' />;", None, None),
+        ("<Foo bar />", None, None),
+        ("<Button />", None, None),
+        ("<Foo autoFocus />", Some(config()), None),
+        ("<div><div autofocus /></div>", Some(config()), None),
+        ("<Button />", None, Some(settings())),
+        ("<Button />", Some(config()), Some(settings())),
     ];
 
     let fail = vec![
-        ("<div autoFocus />", None),
-        ("<div autoFocus={true} />", None),
-        ("<div autoFocus={false} />", None),
-        ("<div autoFocus={undefined} />", None),
-        ("<div autoFocus='true' />", None),
-        ("<div autoFocus='false' />", None),
-        ("<input autoFocus />", None),
-        ("<Foo autoFocus />", None),
-        ("<Button autoFocus />", None),
-        // TODO we need components_settings to test this
-        // ("<Button autoFocus />", Some(array())),
+        ("<div autoFocus />", None, None),
+        ("<div autoFocus={true} />", None, None),
+        ("<div autoFocus={false} />", None, None),
+        ("<div autoFocus={undefined} />", None, None),
+        ("<div autoFocus='true' />", None, None),
+        ("<div autoFocus='false' />", None, None),
+        ("<input autoFocus />", None, None),
+        ("<Foo autoFocus />", None, None),
+        ("<Button autoFocus />", None, None),
+        ("<Button autoFocus />", Some(config()), Some(settings())),
     ];
 
-    Tester::new(NoAutofocus::NAME, pass, fail).test_and_snapshot();
+    Tester::new_with_settings(NoAutofocus::NAME, pass, fail).test_and_snapshot();
 }

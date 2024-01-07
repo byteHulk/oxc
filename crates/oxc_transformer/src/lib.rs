@@ -40,6 +40,7 @@ use crate::{
 };
 
 pub use crate::{
+    es2015::ArrowFunctionsOptions,
     es2020::NullishCoalescingOperatorOptions,
     options::{TransformOptions, TransformTarget},
     react_jsx::{ReactJsxOptions, ReactJsxRuntime, ReactJsxRuntimeOption},
@@ -63,9 +64,11 @@ pub struct Transformer<'a> {
     es2016_exponentiation_operator: Option<ExponentiationOperator<'a>>,
     // es2015
     es2015_function_name: Option<FunctionName<'a>>,
+    es2015_arrow_functions: Option<ArrowFunctions<'a>>,
     es2015_shorthand_properties: Option<ShorthandProperties<'a>>,
     es2015_template_literals: Option<TemplateLiterals<'a>>,
     es2015_duplicate_keys: Option<DuplicateKeys<'a>>,
+    es2015_instanceof: Option<Instanceof<'a>>,
     es3_property_literal: Option<PropertyLiteral<'a>>,
 }
 
@@ -100,9 +103,11 @@ impl<'a> Transformer<'a> {
             es2016_exponentiation_operator: ExponentiationOperator::new(Rc::clone(&ast), ctx.clone(), &options),
             // es2015
             es2015_function_name: FunctionName::new(Rc::clone(&ast), ctx.clone(), &options),
+            es2015_arrow_functions: ArrowFunctions::new(Rc::clone(&ast), ctx.clone(), &options),
             es2015_shorthand_properties: ShorthandProperties::new(Rc::clone(&ast), &options),
             es2015_template_literals: TemplateLiterals::new(Rc::clone(&ast), &options),
             es2015_duplicate_keys: DuplicateKeys::new(Rc::clone(&ast), &options),
+            es2015_instanceof: Instanceof::new(Rc::clone(&ast), ctx.clone(), &options),
             // other
             es3_property_literal: PropertyLiteral::new(Rc::clone(&ast), &options),
             react_jsx: ReactJsx::new(Rc::clone(&ast), ctx.clone(), options)
@@ -155,6 +160,7 @@ impl<'a> VisitMut<'a> for Transformer<'a> {
         self.es2021_logical_assignment_operators.as_mut().map(|t| t.add_vars_to_statements(stmts));
         self.es2020_nullish_coalescing_operators.as_mut().map(|t| t.add_vars_to_statements(stmts));
         self.es2016_exponentiation_operator.as_mut().map(|t| t.add_vars_to_statements(stmts));
+        self.es2015_arrow_functions.as_mut().map(|t| t.transform_statements(stmts));
     }
 
     fn visit_statement(&mut self, stmt: &mut Statement<'a>) {
@@ -174,6 +180,8 @@ impl<'a> VisitMut<'a> for Transformer<'a> {
 
         self.es2021_logical_assignment_operators.as_mut().map(|t| t.transform_expression(expr));
         self.es2020_nullish_coalescing_operators.as_mut().map(|t| t.transform_expression(expr));
+        self.es2015_arrow_functions.as_mut().map(|t| t.transform_expression(expr));
+        self.es2015_instanceof.as_mut().map(|t| t.transform_expression(expr));
         self.es2016_exponentiation_operator.as_mut().map(|t| t.transform_expression(expr));
         self.es2015_template_literals.as_mut().map(|t| t.transform_expression(expr));
 
@@ -216,18 +224,6 @@ impl<'a> VisitMut<'a> for Transformer<'a> {
         class_body.body.iter_mut().for_each(|class_element| {
             self.visit_class_element(class_element);
         });
-    }
-
-    fn visit_formal_parameters(&mut self, params: &mut FormalParameters<'a>) {
-        self.typescript.as_mut().map(|t| t.transform_formal_parameters(params));
-
-        for param in params.items.iter_mut() {
-            self.visit_formal_parameter(param);
-        }
-
-        if let Some(rest) = &mut params.rest {
-            self.visit_rest_element(rest);
-        }
     }
 
     fn visit_variable_declarator(&mut self, declarator: &mut VariableDeclarator<'a>) {

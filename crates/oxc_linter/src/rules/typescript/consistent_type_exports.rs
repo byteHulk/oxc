@@ -14,7 +14,7 @@ use crate::{context::LintContext, rule::Rule};
 
 #[derive(Debug, Error, Diagnostic)]
 #[error("typescript-eslint(consistent-type-export): Consistent type exports")]
-#[diagnostic(severity(error), help("Consistent type export"))]
+#[diagnostic(severity(warning), help("Consistent type export"))]
 struct ConsistentTypeExportDiagnostic(#[label] pub Span);
 
 #[derive(Debug, Default, Clone)]
@@ -166,5 +166,5 @@ fn test() {
         ),
     ];
 
-    Tester::new(ConsistentTypeExports::NAME, pass, fail).test();
+    Tester::new(ConsistentTypeExports::NAME, pass, fail).test_and_snapshot();
 }

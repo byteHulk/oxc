@@ -5,6 +5,11 @@ use oxc_diagnostics::{
 use oxc_span::Span;
 
 #[derive(Debug, Error, Diagnostic)]
+#[error("Source length exceeds 4 GiB limit")]
+#[diagnostic()]
+pub struct OverlongSource;
+
+#[derive(Debug, Error, Diagnostic)]
 #[error("Flow is not supported")]
 #[diagnostic()]
 pub struct Flow(#[label] pub Span);
@@ -258,6 +263,16 @@ pub struct GetterParameters(#[label] pub Span);
 pub struct SetterParameters(#[label] pub Span);
 
 #[derive(Debug, Error, Diagnostic)]
+#[error("TS2681: A constructor cannot have a `this` parameter.")]
+#[diagnostic()]
+pub struct TSConstructorThisParameter(#[label] pub Span);
+
+#[derive(Debug, Error, Diagnostic)]
+#[error("TS2730: An arrow function cannot have a `this` parameter.")]
+#[diagnostic()]
+pub struct TSArrowFunctionThisParameter(#[label] pub Span);
+
+#[derive(Debug, Error, Diagnostic)]
 #[error("'super' can only be used with function calls or in property accesses")]
 #[diagnostic(help("replace with `super()` or `super.prop` or `super[prop]`"))]
 pub struct UnexpectedSuper(#[label] pub Span);
@@ -316,3 +331,8 @@ pub struct UsingDeclarationNotAllowedInForInStatement(#[label] pub Span);
 #[error("Using declarations must have an initializer.")]
 #[diagnostic()]
 pub struct UsingDeclarationsMustBeInitialized(#[label] pub Span);
+
+#[derive(Debug, Error, Diagnostic)]
+#[error("TS1089: `static` modifier cannot appear on a constructor declaration.")]
+#[diagnostic()]
+pub struct StaticConstructor(#[label] pub Span);

@@ -11,10 +11,14 @@ use crate::{
     reference::{Reference, ReferenceId},
 };
 
+#[cfg(feature = "serde")]
+use serde::Serialize;
+
 /// Symbol Table
 ///
 /// `SoA` (Struct of Arrays) for memory efficiency.
 #[derive(Debug, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize), serde(rename_all = "camelCase"))]
 pub struct SymbolTable {
     pub spans: IndexVec<SymbolId, Span>,
     pub names: IndexVec<SymbolId, Atom>,
@@ -37,6 +41,10 @@ impl SymbolTable {
 
     pub fn iter(&self) -> impl Iterator<Item = SymbolId> + '_ {
         self.spans.iter_enumerated().map(|(symbol_id, _)| symbol_id)
+    }
+
+    pub fn iter_rev(&self) -> impl Iterator<Item = SymbolId> + '_ {
+        self.spans.iter_enumerated().rev().map(|(symbol_id, _)| symbol_id)
     }
 
     pub fn get_symbol_id_from_span(&self, span: &Span) -> Option<SymbolId> {

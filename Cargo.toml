@@ -1,13 +1,13 @@
 [workspace]
 resolver = "2"
-members  = ["crates/*", "tasks/*", "editors/vscode/server", "napi/*"]
+members  = ["crates/*", "tasks/*", "napi/*"]
 
 [workspace.package]
 authors      = ["Boshen <boshenc@gmail.com>", "Oxc contributors"]
 categories   = ["development-tools", "web-programming", "compilers"]
 description  = "Oxc is a JavaScript / TypeScript tooling suite."
 edition      = "2021"
-homepage     = "https://github.com/oxc-project/oxc"
+homepage     = "https://oxc-project.github.io"
 keywords     = ["JavaScript", "TypeScript", "parser", "linter", "minifier"]
 license      = "MIT"
 repository   = "https://github.com/oxc-project/oxc"
@@ -83,20 +83,20 @@ oxc_query          = { path = "crates/oxc_query" }
 oxc_linter_plugin  = { path = "crates/oxc_linter_plugin" }
 oxc_prettier       = { path = "crates/oxc_prettier" }
 
-oxc_tasks_common = { path = "tasks/common" }
-oxc_vscode       = { path = "editors/vscode/server" }
+oxc_tasks_common    = { path = "tasks/common" }
+oxc_language_server = { path = "crates/oxc_language_server" }
 
-bpaf                      = { version = "0.9.6" }
+bpaf                      = { version = "0.9.8" }
 bitflags                  = { version = "2.4.1" }
 bumpalo                   = { version = "3.14.0" }
 compact_str               = { version = "0.7.1" }
 convert_case              = { version = "0.6.0" }
 criterion                 = { version = "0.5.1", default-features = false }
-crossbeam-channel         = { version = "0.5.8" }
+crossbeam-channel         = { version = "0.5.10" }
 dashmap                   = { version = "5.5.3" }
 env_logger                = { version = "0.10.1", default-features = false, features = ["auto-color", "humantime"] }
 flate2                    = { version = "1.0.28" }
-futures                   = { version = "0.3.29" }
+futures                   = { version = "0.3.30" }
 ignore                    = { version = "0.4.21" }
 itertools                 = { version = "0.12.0" }
 jemallocator              = { version = "0.5.4" }
@@ -107,18 +107,18 @@ num-bigint                = { version = "0.4.4" }
 num-traits                = { version = "0.2.17" }
 phf                       = { version = "0.11" }
 pico-args                 = { version = "0.5.0" }
-proc-macro2               = { version = "1.0.70" }
+proc-macro2               = { version = "1.0.75" }
 project-root              = { version = "0.2.2" }
-quote                     = { version = "1.0.33" }
+quote                     = { version = "1.0.35" }
 rayon                     = { version = "1.8.0" }
 regex                     = { version = "1.10.2" }
 rustc-hash                = { version = "1.1.0", default-features = false, features = ["std"] }
 ryu-js                    = { version = "1.0.0" }
 ropey                     = { version = "1.6.1" }
-serde                     = { version = "1.0.193" }
-serde_json                = { version = "1.0.108" }
+serde                     = { version = "1.0.194" }
+serde_json                = { version = "1.0.111" }
 syn                       = { version = "=1" }
-thiserror                 = { version = "1.0.50" }
+thiserror                 = { version = "1.0.56" }
 tokio                     = { version = "1" }
 tower-lsp                 = { version = "0.20.0", features = ["proposed"] }
 unicode-id-start          = { version = "1.1.2" }
@@ -135,6 +135,8 @@ trustfall                 = { version = "0.6.1" }
 insta                     = { version = "1.34.0", features = ["glob"] }
 codspeed-criterion-compat = { version = "2.3.3", default-features = false }
 glob                      = { version = "0.3.1" }
+mime_guess                = { version = "2.0.4" }
+language-tags             = { version = "0.3.2" }
 
 [profile.release.package.oxc_wasm]
 opt-level = 'z'

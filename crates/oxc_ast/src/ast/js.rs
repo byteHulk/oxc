@@ -148,6 +148,10 @@ impl<'a> Expression<'a> {
         matches!(self, Self::NumberLiteral(lit) if lit.value == 0.0)
     }
 
+    pub fn is_number(&self, val: f64) -> bool {
+        matches!(self, Self::NumberLiteral(lit) if (lit.value - val).abs() < f64::EPSILON)
+    }
+
     /// Determines whether the given numeral literal's raw value is exactly val
     pub fn is_specific_raw_number_literal(&self, val: &str) -> bool {
         matches!(self, Self::NumberLiteral(lit) if lit.raw == val)
@@ -1530,6 +1534,22 @@ pub struct Function<'a> {
     pub expression: bool,
     pub generator: bool,
     pub r#async: bool,
+    /// Declaring `this` in a Function <https://www.typescriptlang.org/docs/handbook/2/functions.html#declaring-this-in-a-function>
+    ///
+    /// The JavaScript specification states that you cannot have a parameter called `this`,
+    /// and so TypeScript uses that syntax space to let you declare the type for `this` in the function body.
+    ///
+    /// ```TypeScript
+    /// interface DB {
+    ///   filterUsers(filter: (this: User) => boolean): User[];
+    /// }
+    ///
+    /// const db = getDB();
+    /// const admins = db.filterUsers(function (this: User) {
+    ///   return this.admin;
+    /// });
+    /// ```
+    pub this_param: Option<TSThisParameter<'a>>,
     pub params: Box<'a, FormalParameters<'a>>,
     pub body: Option<Box<'a, FunctionBody<'a>>>,
     pub type_parameters: Option<Box<'a, TSTypeParameterDeclaration<'a>>>,
@@ -1589,10 +1609,6 @@ pub struct FormalParameters<'a> {
 impl<'a> FormalParameters<'a> {
     pub fn parameters_count(&self) -> usize {
         self.items.len() + self.rest.as_ref().map_or(0, |_| 1)
-    }
-
-    pub fn this_parameter(&self) -> Option<&FormalParameter<'a>> {
-        self.items.first().filter(|item| matches!(&item.pattern.kind, BindingPatternKind::BindingIdentifier(ident) if ident.name == "this"))
     }
 }
 
@@ -1876,6 +1892,15 @@ pub enum MethodDefinitionKind {
     Method,
     Get,
     Set,
+}
+
+impl MethodDefinitionKind {
+    pub fn is_constructor(&self) -> bool {
+        matches!(self, Self::Constructor)
+    }
+    pub fn is_method(&self) -> bool {
+        matches!(self, Self::Method)
+    }
 }
 
 #[derive(Debug, Clone, Hash)]

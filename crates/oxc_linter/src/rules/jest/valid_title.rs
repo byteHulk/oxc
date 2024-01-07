@@ -27,12 +27,23 @@ use crate::{
 struct ValidTitleDiagnostic(Atom, &'static str, #[label] pub Span);
 
 #[derive(Debug, Default, Clone)]
-pub struct ValidTitle {
+pub struct ValidTitle(Box<ValidTitleConfig>);
+
+#[derive(Debug, Default, Clone)]
+pub struct ValidTitleConfig {
     ignore_type_of_describe_name: bool,
     disallowed_words: Vec<String>,
     ignore_space: bool,
     must_not_match_patterns: HashMap<MatchKind, CompiledMatcherAndMessage>,
     must_match_patterns: HashMap<MatchKind, CompiledMatcherAndMessage>,
+}
+
+impl std::ops::Deref for ValidTitle {
+    type Target = ValidTitleConfig;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
 }
 
 declare_oxc_lint!(
@@ -88,13 +99,13 @@ impl Rule for ValidTitle {
             .and_then(|v| v.get("mustMatch"))
             .and_then(compile_matcher_patterns)
             .unwrap_or_default();
-        Self {
+        Self(Box::new(ValidTitleConfig {
             ignore_type_of_describe_name,
             disallowed_words,
             ignore_space,
             must_not_match_patterns,
             must_match_patterns,
-        }
+        }))
     }
 
     fn run_once(&self, ctx: &LintContext) {
@@ -122,7 +133,7 @@ impl ValidTitle {
             return;
         }
 
-        let Some(Argument::Expression(expr)) = call_expr.arguments.get(0) else {
+        let Some(Argument::Expression(expr)) = call_expr.arguments.first() else {
             return;
         };
 
@@ -252,7 +263,7 @@ fn compile_matcher_pattern(pattern: MatcherPattern) -> Option<CompiledMatcherAnd
             Some((reg, None))
         }
         MatcherPattern::Vec(pattern) => {
-            let reg_str = pattern.get(0).and_then(|v| v.as_str()).map(|v| format!("(?u){v}"))?;
+            let reg_str = pattern.first().and_then(|v| v.as_str()).map(|v| format!("(?u){v}"))?;
             let reg = Regex::new(&reg_str).ok()?;
             let message = pattern.get(1).map(std::string::ToString::to_string);
             Some((reg, message))

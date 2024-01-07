@@ -1,4 +1,4 @@
-Passed: 375/441
+Passed: 379/445
 
 # All Passed:
 * babel-plugin-transform-class-static-block
@@ -72,10 +72,8 @@ Passed: 375/441
 * general/parenthesized-member-call/exec.js
 * general/parenthesized-member-call-loose/exec.js
 
-# babel-plugin-transform-async-generator-functions (23/26)
+# babel-plugin-transform-async-generator-functions (25/26)
 * yield-star/ecma262-pr-2819/exec.js
-* yield-star/throw-method-with-finally/exec.js
-* yield-star-polyfill-corejs3/throw-method-with-finally/exec.js
 
 # babel-plugin-transform-object-rest-spread (18/33)
 * assumption-objectRestNoSymbols/rest-ignore-symbols/exec.js
@@ -93,4 +91,10 @@ Passed: 375/441
 * object-spread-loose-builtins/expression/exec.js
 * object-spread-loose-builtins/no-object-assign-exec/exec.js
 * object-spread-loose-builtins/side-effect/exec.js
+
+# babel-plugin-transform-arrow-functions (2/3)
+* arrow-functions/implicit-var-arguments/exec.js
+
+# babel-plugin-transform-instanceof (0/1)
+* instanceof/instanceof/exec.js
 

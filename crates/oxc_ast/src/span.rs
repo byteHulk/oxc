@@ -294,6 +294,12 @@ impl<'a> GetSpan for JSXElementName<'a> {
     }
 }
 
+impl<'a> GetSpan for JSXElement<'a> {
+    fn span(&self) -> Span {
+        self.span
+    }
+}
+
 impl<'a> GetSpan for TSSignature<'a> {
     fn span(&self) -> Span {
         match self {
@@ -413,6 +419,15 @@ impl<'a> GetSpan for JSXAttributeName<'a> {
         match &self {
             JSXAttributeName::Identifier(ident) => ident.span,
             JSXAttributeName::NamespacedName(namespaced_name) => namespaced_name.span,
+        }
+    }
+}
+
+impl<'a> GetSpan for JSXMemberExpressionObject<'a> {
+    fn span(&self) -> Span {
+        match &self {
+            JSXMemberExpressionObject::Identifier(ident) => ident.span,
+            JSXMemberExpressionObject::MemberExpression(expr) => expr.span,
         }
     }
 }

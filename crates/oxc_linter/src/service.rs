@@ -17,7 +17,10 @@ use oxc_resolver::{ResolveOptions, Resolver};
 use oxc_semantic::{ModuleRecord, SemanticBuilder};
 use oxc_span::{SourceType, VALID_EXTENSIONS};
 
-use crate::{Fixer, LintContext, LintOptions, Linter, Message};
+use crate::{
+    partial_loader::{JavaScriptSource, PartialLoader, LINT_PARTIAL_LOADER_EXT},
+    Fixer, LintContext, Linter, Message,
+};
 
 #[derive(Clone)]
 pub struct LintService {
@@ -25,8 +28,7 @@ pub struct LintService {
 }
 
 impl LintService {
-    pub fn new(cwd: Box<Path>, paths: &[Box<Path>], options: LintOptions) -> Self {
-        let linter = Linter::from_options(options);
+    pub fn new(cwd: Box<Path>, paths: &[Box<Path>], linter: Linter) -> Self {
         let runtime = Arc::new(Runtime::new(cwd, paths, linter));
         Self { runtime }
     }
@@ -132,44 +134,75 @@ impl Runtime {
         })
     }
 
-    fn process_path(&self, path: &Path, tx_error: &DiagnosticSender) {
-        let Ok(source_type) = SourceType::from_path(path) else { return };
+    fn get_source_type_and_text(
+        path: &Path,
+        ext: &str,
+    ) -> Option<Result<(SourceType, String), Error>> {
+        let read_file = |path: &Path| -> Result<String, Error> {
+            fs::read_to_string(path)
+                .map_err(|e| Error::new(FailedToOpenFileError(path.to_path_buf(), e)))
+        };
+        let source_type = SourceType::from_path(path);
+        let not_supported_yet =
+            source_type.as_ref().is_err_and(|_| !LINT_PARTIAL_LOADER_EXT.contains(&ext));
+        if not_supported_yet {
+            return None;
+        }
+        let source_type = source_type.unwrap_or_default();
+        let source_text = match read_file(path) {
+            Ok(source_text) => source_text,
+            Err(e) => {
+                return Some(Err(e));
+            }
+        };
 
+        Some(Ok((source_type, source_text)))
+    }
+
+    fn process_path(&self, path: &Path, tx_error: &DiagnosticSender) {
         if self.init_cache_state(path) {
             return;
         }
-
-        let allocator = Allocator::default();
-        let source_text = match fs::read_to_string(path) {
+        let Some(ext) = path.extension().and_then(std::ffi::OsStr::to_str) else {
+            return;
+        };
+        let Some(source_type_and_text) = Self::get_source_type_and_text(path, ext) else { return };
+        let (source_type, source_text) = match source_type_and_text {
             Ok(source_text) => source_text,
             Err(e) => {
-                tx_error
-                    .send(Some((
-                        path.to_path_buf(),
-                        vec![Error::new(FailedToOpenFileError(path.to_path_buf(), e))],
-                    )))
-                    .unwrap();
+                tx_error.send(Some((path.to_path_buf(), vec![e]))).unwrap();
                 return;
             }
         };
 
-        let mut messages =
-            self.process_source(path, &allocator, &source_text, source_type, true, tx_error);
+        let sources = PartialLoader::parse(ext, &source_text)
+            .unwrap_or_else(|| vec![JavaScriptSource::new(&source_text, source_type)]);
 
-        if self.linter.options().fix {
-            let fix_result = Fixer::new(&source_text, messages).fix();
-            fs::write(path, fix_result.fixed_code.as_bytes()).unwrap();
-            messages = fix_result.messages;
+        if sources.is_empty() {
+            return;
         }
 
-        if !messages.is_empty() {
-            let errors = messages.into_iter().map(|m| m.error).collect();
-            let path = path.strip_prefix(&self.cwd).unwrap_or(path);
-            let diagnostics = DiagnosticService::wrap_diagnostics(path, &source_text, errors);
-            tx_error.send(Some(diagnostics)).unwrap();
+        for JavaScriptSource { source_text, source_type } in sources {
+            let allocator = Allocator::default();
+            let mut messages =
+                self.process_source(path, &allocator, source_text, source_type, true, tx_error);
+
+            if self.linter.options().fix {
+                let fix_result = Fixer::new(source_text, messages).fix();
+                fs::write(path, fix_result.fixed_code.as_bytes()).unwrap();
+                messages = fix_result.messages;
+            }
+
+            if !messages.is_empty() {
+                let errors = messages.into_iter().map(|m| m.error).collect();
+                let path = path.strip_prefix(&self.cwd).unwrap_or(path);
+                let diagnostics = DiagnosticService::wrap_diagnostics(path, source_text, errors);
+                tx_error.send(Some(diagnostics)).unwrap();
+            }
         }
     }
 
+    #[allow(clippy::too_many_arguments)]
     fn process_source<'a>(
         &self,
         path: &Path,
@@ -234,8 +267,11 @@ impl Runtime {
             return semantic_ret.errors.into_iter().map(|err| Message::new(err, None)).collect();
         };
 
-        let lint_ctx =
-            LintContext::new(path.to_path_buf().into_boxed_path(), &Rc::new(semantic_ret.semantic));
+        let lint_ctx = LintContext::new(
+            path.to_path_buf().into_boxed_path(),
+            &Rc::new(semantic_ret.semantic),
+            self.linter.get_settings(),
+        );
         self.linter.run(lint_ctx)
     }
 

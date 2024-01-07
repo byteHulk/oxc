@@ -7,7 +7,7 @@ use oxc_diagnostics::{
     thiserror::Error,
 };
 use oxc_macros::declare_oxc_lint;
-use oxc_span::Span;
+use oxc_span::{GetSpan, Span};
 
 use crate::{context::LintContext, rule::Rule, AstNode};
 
@@ -75,10 +75,12 @@ impl Rule for PreferStringStartsEndsWith {
 
         match err_kind {
             ErrorKind::StartsWith => {
-                ctx.diagnostic(PreferStringStartsEndsWithDiagnostic::StartsWith(call_expr.span));
+                ctx.diagnostic(PreferStringStartsEndsWithDiagnostic::StartsWith(
+                    member_expr.span(),
+                ));
             }
             ErrorKind::EndsWith => {
-                ctx.diagnostic(PreferStringStartsEndsWithDiagnostic::EndsWith(call_expr.span));
+                ctx.diagnostic(PreferStringStartsEndsWithDiagnostic::EndsWith(member_expr.span()));
             }
         }
     }
@@ -90,7 +92,7 @@ enum ErrorKind {
 }
 
 fn check_regex(regexp_lit: &RegExpLiteral) -> Option<ErrorKind> {
-    if regexp_lit.regex.flags.contains(RegExpFlags::I | RegExpFlags::M) {
+    if regexp_lit.regex.flags.intersects(RegExpFlags::I | RegExpFlags::M) {
         return None;
     }
 
@@ -102,7 +104,7 @@ fn check_regex(regexp_lit: &RegExpLiteral) -> Option<ErrorKind> {
 
     if regexp_lit.regex.pattern.ends_with('$')
         && is_simple_string(
-            &regexp_lit.regex.pattern.as_str()[0..regexp_lit.regex.pattern.len() - 2],
+            &regexp_lit.regex.pattern.as_str()[0..regexp_lit.regex.pattern.len() - 1],
         )
     {
         return Some(ErrorKind::EndsWith);
@@ -121,6 +123,7 @@ fn test() {
     use crate::tester::Tester;
 
     let pass = vec![
+        // Unicorn Tests
         r#"foo.startsWith("bar")"#,
         r#"foo.endsWith("bar")"#,
         r#"reject(new Error("foo"))"#,
@@ -131,9 +134,33 @@ fn test() {
         r"foo()()",
         r"if (foo.match(/^foo/)) {}",
         r"if (/^foo/.exec(foo)) {}",
+        r"/foo/.test(bar)",
+        r"/^foo$/.test(bar)",
+        r"/^foo+/.test(bar)",
+        r"/foo+$/.test(bar)",
+        r"/^[,af]/.test(bar)",
+        r"/[,af]$/.test(bar)",
+        r"/^\w/.test(bar)",
+        r"/\w$/.test(bar)",
+        r"/^foo./.test(bar)",
+        r"/foo.$/.test(bar)",
+        r"/\^foo/.test(bar)",
+        r"/^foo/i.test(bar)",
+        r"/^foo/m.test(bar)",
+        r"/^foo/im.test(bar)",
+        r"/^A|B/.test(bar)",
+        r"/A|B$/.test(bar)",
+        // Additional tests
+        r"/^http/i.test(uri)",
     ];
 
     let fail = vec![
+        r"/^foo/.test(bar)",
+        r"/foo$/.test(bar)",
+        r"/^!/.test(bar)",
+        r"/!$/.test(bar)",
+        r"/^ /.test(bar)",
+        r"/ $/.test(bar)",
         r"const foo = {}; /^abc/.test(foo);",
         r"const foo = 123; /^abc/.test(foo);",
         r#"const foo = "hello"; /^abc/.test(foo);"#,
@@ -167,6 +194,8 @@ fn test() {
         r#"/^a/v.test("string")"#,
         r"/a$/.test(`${unknown}`)",
         r"/a$/.test(String(unknown))",
+        r"const a = /你$/.test('a');",
+        r"const a = /^你/.test('a');",
     ];
 
     Tester::new_without_config(PreferStringStartsEndsWith::NAME, pass, fail).test_and_snapshot();

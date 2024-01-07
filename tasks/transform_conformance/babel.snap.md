@@ -1,4 +1,4 @@
-Passed: 277/1111
+Passed: 295/1171
 
 # All Passed:
 * babel-plugin-transform-numeric-separator
@@ -6,6 +6,7 @@ Passed: 277/1111
 * babel-plugin-transform-json-strings
 * babel-plugin-transform-shorthand-properties
 * babel-plugin-transform-sticky-regex
+* babel-plugin-transform-instanceof
 * babel-plugin-transform-property-literals
 
 
@@ -746,6 +747,54 @@ Passed: 277/1111
 # babel-plugin-transform-exponentiation-operator (3/4)
 * regression/4349/input.js
 
+# babel-plugin-transform-arrow-functions (9/26)
+* arrow-functions/arguments/input.js
+* arrow-functions/arguments-global-undeclared/input.js
+* arrow-functions/arguments-global-var/input.js
+* arrow-functions/default-parameters/input.js
+* arrow-functions/destructuring-parameters/input.js
+* arrow-functions/implicit-var-arguments/input.js
+* arrow-functions/nested/input.js
+* arrow-functions/self-referential/input.js
+* arrow-functions/spec/input.js
+* arrow-functions/super-call/input.js
+* arrow-functions/super-prop/input.js
+* arrow-functions/this/input.js
+* assumption-newableArrowFunctions-false/basic/input.js
+* assumption-newableArrowFunctions-false/naming/input.js
+* assumption-newableArrowFunctions-false/self-referential/input.js
+* spec/newableArrowFunction-default/input.js
+* spec/newableArrowFunction-vs-spec-false/input.js
+
+# babel-plugin-transform-function-name (6/33)
+* function-name/assignment/input.js
+* function-name/class-method/input.js
+* function-name/collisions/input.js
+* function-name/export/input.mjs
+* function-name/export-default-arrow-renaming/input.mjs
+* function-name/export-default-arrow-renaming-2/input.mjs
+* function-name/export-default-arrow-renaming-3/input.mjs
+* function-name/export-default-arrow-renaming-es3/input.mjs
+* function-name/export-default-arrow-renaming-module-amd/input.mjs
+* function-name/export-default-arrow-renaming-module-es6/input.mjs
+* function-name/export-default-arrow-renaming-module-system/input.mjs
+* function-name/export-default-arrow-renaming-module-umd/input.mjs
+* function-name/function-assignment/input.js
+* function-name/function-collision/input.js
+* function-name/global/input.js
+* function-name/modules/input.mjs
+* function-name/modules-2/input.mjs
+* function-name/modules-3/input.mjs
+* function-name/modules-4/input.mjs
+* function-name/object/input.js
+* function-name/own-bindings/input.js
+* function-name/self-reference/input.js
+* function-name/shorthand-property/input.js
+* function-name/unicode-id-supported/input.js
+* function-name/with-arrow-functions-transform/input.js
+* function-name/with-arrow-functions-transform-spec/input.js
+* issues/7199/input.js
+
 # babel-plugin-transform-unicode-regex (1/4)
 * unicode-regex/basic/input.js
 * unicode-regex/negated-set/input.js
@@ -869,12 +918,10 @@ Passed: 277/1111
 * regression/15768/input.ts
 * variable-declaration/non-null-in-optional-chain/input.ts
 
-# babel-plugin-transform-react-jsx (144/156)
+# babel-plugin-transform-react-jsx (146/156)
 * autoImport/after-polyfills-compiled-to-cjs/input.mjs
 * autoImport/complicated-scope-module/input.js
-* react/arrow-functions/input.js
 * react/optimisation.react.constant-elements/input.js
-* react-automatic/arrow-functions/input.js
 * react-automatic/optimisation.react.constant-elements/input.js
 * react-automatic/should-handle-attributed-elements/input.js
 * react-automatic/should-throw-when-filter-is-specified/input.js

@@ -294,14 +294,9 @@ impl<'a> Parser<'a> {
         start_span: Span,
     ) -> Result<Statement<'a>> {
         let reserved_ctx = self.ctx;
-
         let (flags, modifiers) = self.eat_modifiers_before_declaration();
-        let declare = flags.declare();
-        let r#async = flags.r#async();
-        self.ctx = self.ctx.and_ambient(declare).and_await(r#async);
-
+        self.ctx = self.ctx.union_ambient_if(flags.declare()).and_await(flags.r#async());
         let result = self.parse_declaration(start_span, modifiers);
-
         self.ctx = reserved_ctx;
         result.map(Statement::Declaration)
     }
@@ -427,19 +422,16 @@ impl<'a> Parser<'a> {
         ))
     }
 
-    pub(crate) fn parse_ts_this_parameter(&mut self) -> Result<FormalParameter<'a>> {
+    pub(crate) fn parse_ts_this_parameter(&mut self) -> Result<TSThisParameter<'a>> {
         let span = self.start_span();
-        let (ident_span, name) = self.parse_identifier_kind(Kind::This);
+
+        let this = {
+            let (span, name) = self.parse_identifier_kind(Kind::This);
+            IdentifierName { span, name }
+        };
+
         let type_annotation = self.parse_ts_type_annotation()?;
-        let kind = self.ast.binding_pattern_identifier(BindingIdentifier::new(ident_span, name));
-        let binding = self.ast.binding_pattern(kind, type_annotation, /* optional */ false);
-        Ok(self.ast.formal_parameter(
-            self.end_span(span),
-            binding,
-            /* accessibility */ None,
-            /* readonly */ false,
-            /* decorators */ self.ast.new_vec(),
-        ))
+        Ok(self.ast.ts_this_parameter(self.end_span(span), this, type_annotation))
     }
 
     pub(crate) fn eat_decorators(&mut self) -> Result<()> {
